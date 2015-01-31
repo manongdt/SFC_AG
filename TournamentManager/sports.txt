@@ -1,0 +1,4 @@
+c,football,11,0,15
+c,basket,5,0,200
+m,tennis,1,0,3
+i,judo,1,0,10
