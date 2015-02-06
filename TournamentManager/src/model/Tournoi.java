@@ -1,19 +1,72 @@
 package model;
 
+import java.util.ArrayList;
+
 public abstract class Tournoi {
-	
-	//attributs
-	private String nom;
-	private Sport sport;
-	private int nbr_equipes; 
-	
-	//constructeur
-	public Tournoi (String n, Sport s, int n_eq){
-		this.nom = n;
-		this.sport = s;
-		this.nbr_equipes = n_eq;
+
+	// attributs
+	protected String nom;
+	protected Sport sport;
+	protected int nbrEquipes;
+	protected int nbrTours;
+	protected int numTourActuel;
+	protected ArrayList<Equipe> listEquipes = new ArrayList<Equipe>();
+	private ArrayList<Equipe> listEquiGagnantes = new ArrayList<Equipe>();
+
+	public String getNom() {
+		return nom;
+	}
+
+	public void setNom(String nom) {
+		this.nom = nom;
+	}
+
+	public Sport getSport() {
+		return sport;
+	}
+
+	public void setSport(Sport sport) {
+		this.sport = sport;
+	}
+
+	public int getNbrEquipes() {
+		return nbrEquipes;
+	}
+
+	public void setNbrEquipes(int nbr_equipes) {
+		this.nbrEquipes = nbr_equipes;
+	}
+
+	public ArrayList<Equipe> getListEquipes() {
+		return listEquipes;
+	}
+
+	public void setListEquipes(ArrayList<Equipe> list_equipes) {
+		this.listEquipes = list_equipes;
+	}
+
+	public int getNbrTours() {
+		return nbrTours;
+	}
+
+	public void setNbrTours(int nbrTours) {
+		this.nbrTours = nbrTours;
+	}
+
+	public int getNumTourActuel() {
+		return numTourActuel;
+	}
+
+	public void setNumTourActuel(int tourActuel) {
+		this.numTourActuel = tourActuel;
 	}
 	
-	
+	public ArrayList<Equipe> getListEquiGagnantes() {
+		return listEquiGagnantes;
+	}
+
+	public void setListEquiGagnantes(ArrayList<Equipe> lstEquGagn) {
+		this.listEquiGagnantes = lstEquGagn;
+	}
 
 }

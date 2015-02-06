@@ -1,4 +1,4 @@
-package service;
+package controller;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -23,7 +23,7 @@ public class Chargement {
 
 			while (line != null) {
 				String tab[] = line.split(",");
-				Sport s = new Sport(tab[1], Integer.parseInt(tab[2]), Integer.parseInt(tab[3]), Integer.parseInt(tab[4]));
+				Sport s = new Sport(tab[1], Integer.parseInt(tab[2]), Integer.parseInt(tab[3]), Integer.parseInt(tab[4]), tab[0].charAt(0));
 				if (tab[0].equals("c")) {
 					sport_co.add(s);
 				} else if (tab[0].equals("i")) {
@@ -42,11 +42,11 @@ public class Chargement {
 		}
 	}
 
-	public static List<Sport> getSport_co() {
+	public static List<Sport> getSportCo() {
 		return sport_co;
 	}
 
-	public static List<Sport> getSport_indiv() {
+	public static List<Sport> getSportIndiv() {
 		return sport_indiv;
 	}
 

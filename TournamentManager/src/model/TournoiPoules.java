@@ -1,10 +1,13 @@
 package model;
 
+import java.util.ArrayList;
+
 public class TournoiPoules extends Tournoi{
 
-	public TournoiPoules(String n, Sport s, int n_eq) {
-		super(n, s, n_eq);
-		// TODO Auto-generated constructor stub
+	public TournoiPoules(String n, Sport s, int n_eq, char typeSport) {
+		this.nom = n;
+		this.sport = s;
+		this.nbrEquipes = n_eq;
 	}
 
 }
