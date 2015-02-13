@@ -7,6 +7,11 @@ public class Joueur {
 	private String prenom;
 	private int age;
 
+	public Joueur() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
 	// constructeur
 	public Joueur (Equipe equ, int num) {
 		// valeurs par defaut

@@ -9,6 +9,11 @@ public class Sport {
 	private int score_mini;
 	private int score_max;
 
+	public Sport() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
 	// constructeur
 	public Sport(String n, int nb_j, int smini, int smax, char t) {
 		this.nom = n;

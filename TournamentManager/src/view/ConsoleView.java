@@ -7,84 +7,21 @@ import java.util.Scanner;
 import java.util.regex.Pattern;
 
 import controller.Chargement;
-import controller.ControllerEliminDirecte;
 import model.Equipe;
 import model.Match;
 import model.Sport;
 import model.Tournoi;
-import model.TournoiElimiDirecte;
 
-public class Console {
+public class ConsoleView extends AbstractView {
+
 	private static Scanner sc = new Scanner(System.in);
 
-	// Menu - creation d'un tournoi en mode console
-	public static void modeConsole() {
-
-		afficherMenu();
-		String nom_tournoi = choixNomTournoi();
-		// sport co ou indiv
-		char type = choixTypeSport();
-		// choix du sport
-		Sport sport = choixSportTournoi(type);
-		// choix de l'organisation du tournoi
-		int orga = choixOrgaTournoi();
-		// choix du nombre d'equipes
-		int n_eq = choixNbrEquipe(orga, type);
-
-		if (orga == 1) {
-			System.out
-					.println("\nVotre tournoi '"
-							+ nom_tournoi
-							+ "' est un tournoi à phase de poules/phase finale. Le sport choisi est: "
-							+ sport.getNom() + ".");
-
-		} else {
-			System.out
-					.println("\nVotre tournoi '"
-							+ nom_tournoi
-							+ "' est un tournoi à élimination directe. Le sport choisi est: "
-							+ sport.getNom() + ".");
-			TournoiElimiDirecte tournoi = new TournoiElimiDirecte(nom_tournoi,
-					sport, n_eq);
-			int choix;
-			do {
-				choix = choixSousMenu();
-				if (choix == 1) {
-					modifierEquipe(tournoi);
-				} else {
-					System.out.println("\n\t***Lancement du tournoi!***");
-
-					ControllerEliminDirecte.lancementTournoiElimin(tournoi);
-
-					while (tournoi.getNumTourActuel() < tournoi.getNbrTours()) {
-						// creation des matchs du premier tour
-						ControllerEliminDirecte.creationMatchs(tournoi);
-
-						afficherTour(tournoi);
-
-						Match[] tour = tournoi.getListTours().get(
-								tournoi.getNumTourActuel());
-						while (!ControllerEliminDirecte
-								.passeTourSuivant(tournoi)) {
-							for (Match m : tour) {
-								if (m.getVainqueur() == null) {
-									saisieScoreMatch(m);
-								}
-							}
-						}
-					}
-					System.out.println("\n*** Vainqueur du tournoi: "
-							+ tournoi.getListTours().get(
-									tournoi.getNumTourActuel() - 1)[0]
-									.getVainqueur().getNom()+" ***");
-
-				}
-			} while (choix == 1);
-
-		}
+	public ConsoleView() {
+		super();
+		// TODO Auto-generated constructor stub
 	}
 
-	public static void afficherMenu() {
+	public void afficherMenuPrincipal() {
 		System.out.println("***************************");
 		System.out.println("**Gestionnaire de tournoi**");
 		System.out.println("***************************\n");
@@ -92,7 +29,7 @@ public class Console {
 		afficherSeparation();
 	}
 
-	public static String choixNomTournoi() {
+	public String choixNomTournoi() {
 		System.out.println("- Nom du tournoi:");
 		Pattern pattern = Pattern.compile("^[a-zA-Z0-9 ]*$");
 		String nom_tournoi;
@@ -103,7 +40,7 @@ public class Console {
 		return nom_tournoi;
 	}
 
-	public static char choixTypeSport() {
+	public char choixTypeSport() {
 		String type;
 		System.out.println("\n- Tournoi collectif: taper 'c'");
 		System.out.println("- Tournoi individuel: taper 'i'");
@@ -117,7 +54,7 @@ public class Console {
 		return type.charAt(0);
 	}
 
-	public static Sport choixSportTournoi(char type) {
+	public Sport choixSportTournoi(char type) {
 		Sport sport = null;
 		// chargement de la liste des sports
 		Chargement.chargerSport();
@@ -147,7 +84,7 @@ public class Console {
 		return listSport.get(index - 1);
 	}
 
-	public static int choixOrgaTournoi() {
+	public int choixOrgaTournoi() {
 		int orga = 0;
 		System.out.println("\n- Phase de poules/phase finale: taper '1'");
 		System.out.println("- Elimination directe: taper '2'");
@@ -164,7 +101,7 @@ public class Console {
 		return orga;
 	}
 
-	public static int choixNbrEquipe(int orgaTournoi, char typeSport) {
+	public int choixNbrEquipe(int orgaTournoi, char typeSport) {
 		int nbr = 0;
 		String str = typeSport == 'c' ? "d'équipes" : "de joueurs";
 		switch (orgaTournoi) {
@@ -204,7 +141,7 @@ public class Console {
 		return nbr;
 	}
 
-	public static void afficherSportsIndivConsole() {
+	public void afficherSportsIndivConsole() {
 		int i = 1;
 		for (Sport s : Chargement.getSportIndiv()) {
 			System.out.println(i + ": " + s.getNom());
@@ -212,7 +149,7 @@ public class Console {
 		}
 	}
 
-	public static void afficherSportsCoConsole() {
+	public void afficherSportsCoConsole() {
 		int i = 1;
 		for (Sport s : Chargement.getSportCo()) {
 			System.out.println(i + ": " + s.getNom());
@@ -220,16 +157,17 @@ public class Console {
 		}
 	}
 
-	public static void afficherSeparation() {
-		System.out.println("\n _________________________");
+	public void afficherSeparation() {
+		System.out
+				.println("\n ________________________________________________");
 	}
 
-	public static void afficherMatch(Match m) {
+	public void afficherMatch(Match m) {
 		System.out.println(m.getEquipe1().getNom() + " vs "
 				+ m.getEquipe2().getNom());
 	}
 
-	public static void afficherTour(TournoiElimiDirecte tournoi) {
+	public void afficherTour(Tournoi tournoi) {
 		int numTour = tournoi.getNumTourActuel();
 		int indiceTour = numTour + 1;
 		System.out.println("\n\tTour " + indiceTour);
@@ -238,7 +176,7 @@ public class Console {
 		}
 	}
 
-	public static void saisieScoreMatch(Match m) {
+	public void saisieScoreMatch(Match m) {
 		int s1 = -1, s2 = -1;
 		System.out.println("Saisie du score pour le match '"
 				+ m.getEquipe1().getNom() + " vs " + m.getEquipe2().getNom()
@@ -273,7 +211,7 @@ public class Console {
 		m.setScore(s1, s2);
 	}
 
-	public static int choixSousMenu() {
+	public int choixSousMenu() {
 		int sm = 0;
 		afficherSeparation();
 		System.out.println("\nModifier les équipes: taper '1'");
@@ -291,7 +229,7 @@ public class Console {
 		return sm;
 	}
 
-	public static void modifierEquipe(Tournoi tournoi) {
+	public void modifierEquipe(Tournoi tournoi) {
 		ArrayList<Equipe> lst = tournoi.getListEquipes();
 		System.out.println("\nQuelle équipe souhaitez-vous modifier ?");
 		int i = 0, choix = -1;
@@ -321,5 +259,16 @@ public class Console {
 		} while (!pattern.matcher(nomEquipe).find());
 		lst.get(choix).setNom(nomEquipe);
 
+	}
+
+	public void alerteLancement() {
+		afficherSeparation();
+		System.out.println("\tLANCEMENT TOURNOI");
+	}
+
+	public void annonceVainqueur(Tournoi tournoi) {
+		System.out.println("\n*** Vainqueur du tournoi: "
+				+ tournoi.getListTours().get(tournoi.getNumTourActuel() - 1)[0]
+						.getVainqueur().getNom() + " ***");
 	}
 }

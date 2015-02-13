@@ -7,6 +7,11 @@ public class Match {
 	private int score1;
 	private int score2;
 
+	public Match() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
 	// constructeur
 	public Match(Equipe e1, Equipe e2) {
 		equipe1 = e1;

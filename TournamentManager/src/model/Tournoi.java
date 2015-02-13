@@ -11,7 +11,9 @@ public abstract class Tournoi {
 	protected int nbrTours;
 	protected int numTourActuel;
 	protected ArrayList<Equipe> listEquipes = new ArrayList<Equipe>();
-	private ArrayList<Equipe> listEquiGagnantes = new ArrayList<Equipe>();
+	protected ArrayList<Equipe> listEquiGagnantes = new ArrayList<Equipe>();
+	protected ArrayList<Match[]> listTours = new ArrayList<Match[]>();
+	protected ArrayList<Equipe> listEquiTourActuel = new ArrayList<Equipe>();
 
 	public String getNom() {
 		return nom;
@@ -44,7 +46,14 @@ public abstract class Tournoi {
 	public void setListEquipes(ArrayList<Equipe> list_equipes) {
 		this.listEquipes = list_equipes;
 	}
+	
+	public ArrayList<Equipe> getListEquiGagnantes() {
+		return listEquiGagnantes;
+	}
 
+	public void setListEquiGagnantes(ArrayList<Equipe> lstEquGagn) {
+		this.listEquiGagnantes = lstEquGagn;
+	}
 	public int getNbrTours() {
 		return nbrTours;
 	}
@@ -60,13 +69,21 @@ public abstract class Tournoi {
 	public void setNumTourActuel(int tourActuel) {
 		this.numTourActuel = tourActuel;
 	}
-	
-	public ArrayList<Equipe> getListEquiGagnantes() {
-		return listEquiGagnantes;
+
+	public void setListTours(ArrayList<Match[]> listTours) {
+		this.listTours = listTours;
 	}
 
-	public void setListEquiGagnantes(ArrayList<Equipe> lstEquGagn) {
-		this.listEquiGagnantes = lstEquGagn;
+	public ArrayList<Match[]> getListTours() {
+		return listTours;
+	}
+
+	public ArrayList<Equipe> getListEquipesTourActuel() {
+		return listEquiTourActuel;
+	}
+
+	public void setListEquipesTourActuel(ArrayList<Equipe> lstEquTourActu) {
+		this.listEquiTourActuel = lstEquTourActu;
 	}
 
 }

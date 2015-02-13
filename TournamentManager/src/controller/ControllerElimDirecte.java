@@ -2,11 +2,41 @@ package controller;
 
 import java.util.ArrayList;
 
+import view.AbstractView;
 import model.Equipe;
 import model.Match;
-import model.TournoiElimiDirecte;
+import model.TournoiElimDirecte;
 
-public class ControllerEliminDirecte extends ControllerTournoi {
+public class ControllerElimDirecte extends ControllerTournoi {
+
+	private AbstractView viewMode;
+	private TournoiElimDirecte tournoi;
+
+	public ControllerElimDirecte(AbstractView viewM, TournoiElimDirecte tournoiED) {
+		super();
+		this.tournoi = tournoiED;
+		this.viewMode = viewM;
+		
+	}
+
+	public void start() {
+		lancementTournoiElimin(tournoi);
+		while (tournoi.getNumTourActuel() < tournoi.getNbrTours()) {
+			// creation des matchs du premier tour
+			creationMatchs(tournoi);
+			this.viewMode.afficherTour(tournoi);
+			Match[] tour = tournoi.getListTours().get(
+					tournoi.getNumTourActuel());
+			while (!ControllerElimDirecte.passeTourSuivant(tournoi)) {
+				for (Match m : tour) {
+					if (m.getVainqueur() == null) {
+						this.viewMode.saisieScoreMatch(m);
+					}
+				}
+			}
+		}
+		this.viewMode.annonceVainqueur(tournoi);
+	}
 
 	public static int calculNbrTours(int nbrEq) {
 		int nbr_equ = 1;
@@ -21,11 +51,11 @@ public class ControllerEliminDirecte extends ControllerTournoi {
 		return exposant;
 	}
 
-	public static void creationToursTournoi(TournoiElimiDirecte tournoi) {
+	public void creationToursTournoi(TournoiElimDirecte tournoi) {
 		int nbrEq = tournoi.getNbrEquipes();
 		int nbrTours = tournoi.getNbrTours();
 		ArrayList<Match[]> list_tours = tournoi.getListTours();
-		
+
 		int nbr_matchs_tours = (int) Math.ceil(nbrEq / 2);
 		for (int l = 0; l < nbrTours; l++) {
 			if (l != 0) {
@@ -37,7 +67,7 @@ public class ControllerEliminDirecte extends ControllerTournoi {
 		}
 	}
 
-	public static void creationMatchs(TournoiElimiDirecte tournoi) {
+	public void creationMatchs(TournoiElimDirecte tournoi) {
 		int numTour = tournoi.getNumTourActuel();
 		Match[] tour = tournoi.getListTours().get(numTour);
 		ArrayList<Equipe> listEq = tournoi.getListEquipesTourActuel();
@@ -52,8 +82,8 @@ public class ControllerEliminDirecte extends ControllerTournoi {
 
 		while ((indice < listEq.size()) || (indice + 1 < listEq.size())) {
 			if ((indice < listEq.size()) && (indice + 1 < listEq.size())) {
-				tour[indice / 2] = new Match(
-						listEq.get(indice), listEq.get(indice + 1));
+				tour[indice / 2] = new Match(listEq.get(indice),
+						listEq.get(indice + 1));
 				indice += 2;
 			} else {
 				listEqTourGagn.add(listEq.get(indice));
@@ -62,9 +92,10 @@ public class ControllerEliminDirecte extends ControllerTournoi {
 		}
 	}
 
-	public static void lancementTournoiElimin(TournoiElimiDirecte tournoi) {
+	public void lancementTournoiElimin(TournoiElimDirecte tournoi) {
+		this.viewMode.alerteLancement();
 		// placement aleatoire des equipes dans la liste
-		ControllerTournoi.shuffleList(tournoi.getListEquipesTourActuel());
+		ControllerTournoi.shuffleList(tournoi.getListEquipes());
 		// creation des tours du tournoi
 		creationToursTournoi(tournoi);
 	}

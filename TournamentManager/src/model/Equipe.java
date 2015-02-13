@@ -5,23 +5,31 @@ import java.util.List;
 
 public class Equipe {
 	// attributs
-	private int nbr_joueurs;
+	private int nbrJoueurs;
 	private Sport sport;
 	private String nom;
 	private String description;
 	private int id;
+	private int points;
+	private int goalAverage;
 	private List<Joueur> list_joueurs = new ArrayList<Joueur>();
 	private List<Integer> list_scores;
+
+	public Equipe() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 
 	// constructeur equipe
 	public Equipe(Sport s, int numEquipe) {
 		this.sport = s;
 		this.id = numEquipe;
 		// valeurs par defaut
-		this.nbr_joueurs = sport.getNbr_joueurs();
+		this.nbrJoueurs = sport.getNbr_joueurs();
 		this.nom = "Equipe" + numEquipe;
+		this.goalAverage = 0;
 		this.description = "Aucune description de l'équipe disponible pour le moment.";
-		for (int i = 0; i < nbr_joueurs; i++) {
+		for (int i = 0; i < nbrJoueurs; i++) {
 			list_joueurs.add(new Joueur(this, i));
 		}
 		this.list_scores = new ArrayList<Integer>();
@@ -36,11 +44,11 @@ public class Equipe {
 	}
 
 	public int getNbr_joueurs() {
-		return nbr_joueurs;
+		return nbrJoueurs;
 	}
 
 	public void setNbr_joueurs(int nbr_joueurs) {
-		this.nbr_joueurs = nbr_joueurs;
+		this.nbrJoueurs = nbr_joueurs;
 	}
 
 	public Sport getSport() {
@@ -81,6 +89,30 @@ public class Equipe {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public int getNbrJoueurs() {
+		return nbrJoueurs;
+	}
+
+	public void setNbrJoueurs(int nbrJoueurs) {
+		this.nbrJoueurs = nbrJoueurs;
+	}
+
+	public int getPoints() {
+		return points;
+	}
+
+	public void setPoints(int points) {
+		this.points = points;
+	}
+
+	public int getGoalAverage() {
+		return goalAverage;
+	}
+
+	public void setGoalAverage(int goalAverage) {
+		this.goalAverage = goalAverage;
 	}
 	
 }
