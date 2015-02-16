@@ -12,8 +12,7 @@ public class Equipe {
 	private int id;
 	private int points;
 	private int goalAverage;
-	private List<Joueur> list_joueurs = new ArrayList<Joueur>();
-	private List<Integer> list_scores;
+	private ArrayList<Joueur> list_joueurs = new ArrayList<Joueur>();
 
 	public Equipe() {
 		super();
@@ -28,19 +27,11 @@ public class Equipe {
 		this.nbrJoueurs = sport.getNbr_joueurs();
 		this.nom = "Equipe" + numEquipe;
 		this.goalAverage = 0;
+		this.points =0;
 		this.description = "Aucune description de l'équipe disponible pour le moment.";
 		for (int i = 0; i < nbrJoueurs; i++) {
 			list_joueurs.add(new Joueur(this, i));
 		}
-		this.list_scores = new ArrayList<Integer>();
-	}
-
-	public List<Integer> getList_scores() {
-		return list_scores;
-	}
-
-	public void setList_scores(List<Integer> list_scores) {
-		this.list_scores = list_scores;
 	}
 
 	public int getNbr_joueurs() {
@@ -79,7 +70,7 @@ public class Equipe {
 		return list_joueurs;
 	}
 
-	public void setList_joueurs(List<Joueur> list_joueurs) {
+	public void setList_joueurs(ArrayList<Joueur> list_joueurs) {
 		this.list_joueurs = list_joueurs;
 	}
 
@@ -103,16 +94,16 @@ public class Equipe {
 		return points;
 	}
 
-	public void setPoints(int points) {
-		this.points = points;
+	public void addPoints(int points) {
+		this.points += points;
 	}
 
 	public int getGoalAverage() {
 		return goalAverage;
 	}
 
-	public void setGoalAverage(int goalAverage) {
-		this.goalAverage = goalAverage;
+	public void addGoalAverage(int goalAverage) {
+		this.goalAverage += goalAverage;
 	}
 	
 }

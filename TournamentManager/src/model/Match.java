@@ -26,8 +26,26 @@ public class Match {
 	}
 
 	public Equipe getVainqueur() {
-		if (score1 != score2) {
-			return score2 > score1 ? equipe2 : equipe1;
+		if (score1 != -1 && score2 != -1) {
+			if(score1 > score2){
+				equipe1.addPoints(3);
+				equipe2.addPoints(0);
+				equipe1.addGoalAverage(score1 - score2);
+				equipe2.addGoalAverage(score2 - score1);
+				return equipe1;
+			}else if (score1 < score2){
+				equipe1.addPoints(0);
+				equipe2.addPoints(3);
+				equipe1.addGoalAverage(score1 - score2);
+				equipe2.addGoalAverage(score2 - score1);
+				return equipe2;
+			}else{
+				equipe1.addPoints(1);
+				equipe2.addPoints(1);
+				equipe1.addGoalAverage(score1 - score2);
+				equipe2.addGoalAverage(score2 - score1);
+				return null;
+			}
 		} else {
 			return null;
 		}

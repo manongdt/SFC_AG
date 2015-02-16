@@ -10,10 +10,11 @@ public abstract class Tournoi {
 	protected int nbrEquipes;
 	protected int nbrTours;
 	protected int numTourActuel;
+	protected boolean isTournoiPoules;
 	protected ArrayList<Equipe> listEquipes = new ArrayList<Equipe>();
 	protected ArrayList<Equipe> listEquiGagnantes = new ArrayList<Equipe>();
 	protected ArrayList<Match[]> listTours = new ArrayList<Match[]>();
-	protected ArrayList<Equipe> listEquiTourActuel = new ArrayList<Equipe>();
+	protected ArrayList<Equipe> listEquipesTourActuel = new ArrayList<Equipe>();
 
 	public String getNom() {
 		return nom;
@@ -79,11 +80,15 @@ public abstract class Tournoi {
 	}
 
 	public ArrayList<Equipe> getListEquipesTourActuel() {
-		return listEquiTourActuel;
+		return listEquipesTourActuel;
 	}
 
 	public void setListEquipesTourActuel(ArrayList<Equipe> lstEquTourActu) {
-		this.listEquiTourActuel = lstEquTourActu;
+		this.listEquipesTourActuel = lstEquTourActu;
+	}
+
+	public boolean isTournoiPoules() {
+		return isTournoiPoules;
 	}
 
 }

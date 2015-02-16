@@ -1,9 +1,9 @@
 package controller;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import view.AbstractView;
-import view.ConsoleView;
 import model.Equipe;
 import model.Match;
 import model.Poule;
@@ -21,20 +21,43 @@ public class ControllerPoules extends ControllerTournoi {
 	}
 
 	public void start() {
-		int numTourActuel = tournoi.getNumTourActuel();
-		int nbrToursTotal = tournoi.getNbrTours();
+		
 		lancementTournoiPoules(tournoi);
-		while (numTourActuel < nbrToursTotal) {
-			// si c'est la phase de poule
-			if (numTourActuel == 0) {
+		// phase de poule
+		this.viewMode.afficherAnnoncePhasePoules(tournoi);
+		while (!this.passePhaseFinale(tournoi)) {
+			this.viewMode.saisirScorePoule(tournoi);
+		}
 
-			} else { // si c'est la phase finale
-				this.viewMode.afficherTour(tournoi);
+		// phase finale
+		this.viewMode.afficherAnnoncePhaseFinale();
+		lancementPhaseFinale(tournoi);
+		while (tournoi.getNumTourActuel() < tournoi.getNbrTours()) {
+			creationMatchsED(tournoi);
+			this.viewMode.afficherTour(tournoi);
+			Match[] tour = tournoi.getListTours().get(
+					tournoi.getNumTourActuel());
+			while (!this.passeTourSuivantED(tournoi)) {
+				for (Match m : tour) {
+					if (m.getVainqueur() == null) {
+						this.viewMode.saisieScoreMatch(m, false);
+					}
+				}
 			}
 		}
+		this.viewMode.annonceVainqueur(tournoi);
+
 	}
 
-	public void creationToursPoules(TournoiPoules tournoi) {
+	public void lancementTournoiPoules(TournoiPoules tournoi) {
+		this.viewMode.alerteLancement(tournoi);
+		// placement aleatoire des equipes dans la liste
+		Collections.shuffle(tournoi.getListEquipesTourActuel());
+		// creation tours poules du tournoi
+		creationMatchsPoules(tournoi);
+	}
+
+	public void creationMatchsPoules(TournoiPoules tournoi) {
 		int nbrEquipesPoule = TournoiPoules.getNbrEquipesPoule();
 		ArrayList<Equipe> listEq = tournoi.getListEquipesTourActuel();
 		ArrayList<Poule> listPoule = tournoi.getListPoules();
@@ -42,11 +65,11 @@ public class ControllerPoules extends ControllerTournoi {
 		ArrayList<Equipe> listEqPoule = new ArrayList<Equipe>();
 
 		int indice = 0;
-		while ((indice < listEq.size())
-				|| ((indice + nbrEquipesPoule) < listEq.size())) {
+		while ((indice + (nbrEquipesPoule - 1)) < listEq.size()) {
 			for (int i = 0; i < 4; i++) {
 				for (int j = i + 1; j < 4; j++) {
-					listMatchs.add(new Match(listEq.get(i), listEq.get(j)));
+					listMatchs.add(new Match(listEq.get(indice + i), listEq
+							.get(indice + j)));
 				}
 				listEqPoule.add(listEq.get(indice + i));
 			}
@@ -57,11 +80,24 @@ public class ControllerPoules extends ControllerTournoi {
 		}
 	}
 
-	public void lancementTournoiPoules(TournoiPoules tournoi) {
-		this.viewMode.alerteLancement();
+	public boolean passePhaseFinale(TournoiPoules tournoi) {
+		if (tournoi.isPhasePouleTerminee()) {
+			for (Poule p : tournoi.getListPoules()) {
+				tournoi.addListEquiGagnantes(p.getListVainqueurs());
+			}
+			return true;
+		}
+		return false;
+	}
+
+	public void lancementPhaseFinale(TournoiPoules tournoi) {
+		tournoi.getListEquipesTourActuel().clear();
+		tournoi.getListEquipesTourActuel().addAll(
+				tournoi.getListEquiGagnantes());
+		tournoi.getListEquiGagnantes().clear();
 		// placement aleatoire des equipes dans la liste
-		ControllerTournoi.shuffleList(tournoi.getListEquipes());
-		// creation tours poules du tournoi
-		creationToursPoules(tournoi);
+		Collections.shuffle(tournoi.getListEquipesTourActuel());
+		// creation des tours du tournoi
+		creationToursED(tournoi);
 	}
 }

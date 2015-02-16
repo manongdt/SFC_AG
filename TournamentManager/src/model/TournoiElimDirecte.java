@@ -15,10 +15,11 @@ public class TournoiElimDirecte extends Tournoi {
 		this.nom = n;
 		this.sport = s;
 		this.nbrEquipes = n_eq;
-		this.nbrTours = ControllerElimDirecte.calculNbrTours(nbrEquipes);
 		this.numTourActuel = 0;
-		ControllerTournoi.creerEquipes(nbrEquipes, sport, listEquipes);
-		this.listEquiTourActuel.addAll(listEquipes);
+		isTournoiPoules = false;
+		this.nbrTours = ControllerElimDirecte.calculNbrToursED(nbrEquipes);
+		ControllerTournoi.creerEquipes(this);
+		this.listEquipesTourActuel.addAll(listEquipes);
 	}	
 
 }
