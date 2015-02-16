@@ -44,7 +44,6 @@ public class Poule {
 			int nbrMeilleur = 0;
 
 			for (int j = i + 1; j < listEquipes.size() && nbrMeilleur < 2; j++) {
-
 				if (listEquipes.get(i).getPoints() < listEquipes.get(j)
 						.getPoints()) {
 					nbrMeilleur++;
@@ -63,6 +62,10 @@ public class Poule {
 				nbrVainqueurs++;
 			}
 		}
+		for(Equipe e : listVainqueurs){
+			System.out.println(e.getNom());
+		}
+		
 		return listVainqueurs;
 	}
 

@@ -53,9 +53,9 @@ public class ConsoleView extends AbstractView {
 			System.out.print(" => ");
 			sType = sc.nextLine();
 		} while (!pattern.matcher(sType).find());
-		
+
 		char type = sType.charAt(0);
-		
+
 		// chargement de la liste des sports
 		Chargement.chargerSport();
 		System.out.println("\n- Sport du tournoi: ");
@@ -257,7 +257,7 @@ public class ConsoleView extends AbstractView {
 		System.out.println("Modification de l'équipe '"
 				+ lst.get(choix).getNom() + ":");
 		System.out.print("Nom:");
-		Pattern pattern = Pattern.compile("^[a-zA-Z0-9]*$");
+		Pattern pattern = Pattern.compile("^[a-zA-Z0-9 ]*$");
 		String nomEquipe;
 		do {
 			sc = new Scanner(System.in);
@@ -321,7 +321,7 @@ public class ConsoleView extends AbstractView {
 		int i = 0;
 		for (Poule p : tournoi.getListPoules()) {
 			if (!p.isMatchsFinis()) {
-				System.out.println(i+ ": Poule " + i);
+				System.out.println(i + ": Poule " + i);
 			}
 			i++;
 		}
@@ -354,6 +354,8 @@ public class ConsoleView extends AbstractView {
 		afficherPoule(p);
 		for (Match m : p.getListMatchs()) {
 			saisieScoreMatch(m, true);
+			//pour avoir les goal average et les points des matchs
+			m.getVainqueur();
 		}
 		p.setMatchsFinis(true);
 	}
