@@ -1,6 +1,8 @@
 package controller;
 
+import java.util.ArrayList;
 import java.util.Collections;
+
 import view.AbstractView;
 import model.Match;
 import model.TournoiElimDirecte;
@@ -24,8 +26,7 @@ public class ControllerElimDirecte extends ControllerTournoi {
 			// creation des matchs
 			creationMatchsED(tournoi);
 			this.viewMode.afficherTour(tournoi);
-			Match[] tour = tournoi.getListTours().get(
-					tournoi.getNumTourActuel());
+			ArrayList <Match> tour = tournoi.getTour();
 
 			while (!this.passeTourSuivantED(tournoi)) {
 				for (Match m : tour) {
@@ -42,8 +43,6 @@ public class ControllerElimDirecte extends ControllerTournoi {
 		viewMode.alerteLancement(tournoi);
 		// placement aleatoire des equipes dans la liste
 		Collections.shuffle(tournoi.getListEquipesTourActuel());
-		// creation des tours du tournoi
-		creationToursED(tournoi);
 	}
 
 }

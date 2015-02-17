@@ -44,8 +44,7 @@ public class ControllerPoules extends ControllerTournoi {
 		while (tournoi.getNumTourActuel() < tournoi.getNbrTours()) {
 			creationMatchsED(tournoi);
 			this.viewMode.afficherTour(tournoi);
-			Match[] tour = tournoi.getListTours().get(
-					tournoi.getNumTourActuel());
+			ArrayList <Match> tour = tournoi.getTour();
 			// tant qu'il manque des vainqueurs on continue
 			while (!this.passeTourSuivantED(tournoi)) {
 				for (Match m : tour) {
@@ -144,7 +143,5 @@ public class ControllerPoules extends ControllerTournoi {
 		tournoi.getListEquiGagnantes().clear();
 		// placement aleatoire des equipes dans la liste
 		Collections.shuffle(tournoi.getListEquipesTourActuel());
-		// creation des tours du tournoi
-		creationToursED(tournoi);
 	}
 }

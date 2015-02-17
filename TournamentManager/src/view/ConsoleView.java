@@ -168,8 +168,8 @@ public class ConsoleView extends AbstractView {
 		int indiceTour = numTour + 1;
 		System.out.println("\n TOUR " + indiceTour);
 		System.out.println(" *******");
-		for (int i = 0; i < tournoi.getListTours().get(numTour).length; i++) {
-			afficherMatch(tournoi.getListTours().get(numTour)[i]);
+		for (int i = 0; i < tournoi.getTour().size(); i++) {
+			afficherMatch(tournoi.getTour().get(i));
 		}
 	}
 
@@ -287,8 +287,7 @@ public class ConsoleView extends AbstractView {
 
 	public void annonceVainqueurTournoi(Tournoi tournoi) {
 		System.out.println("\n/!\\ VAINQUEUR DU TOURNOI: "
-				+ tournoi.getListTours().get(tournoi.getNumTourActuel() - 1)[0]
-						.getVainqueur().getNom() + " /!\\");
+				+ tournoi.getTour().get(0).getVainqueur().getNom() + " /!\\");
 	}
 
 	public void afficherAnnoncePhasePoules(TournoiPoules tournoi) {
