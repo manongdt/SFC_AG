@@ -39,33 +39,6 @@ public class Poule {
 	}
 
 	public ArrayList<Equipe> getListVainqueurs() {
-		int nbrVainqueurs = 0;
-		for (int i = 0; i < listEquipes.size() && nbrVainqueurs < 2; i++) {
-			int nbrMeilleur = 0;
-
-			for (int j = i + 1; j < listEquipes.size() && nbrMeilleur < 2; j++) {
-				if (listEquipes.get(i).getPoints() < listEquipes.get(j)
-						.getPoints()) {
-					nbrMeilleur++;
-
-				} else if (listEquipes.get(i).getPoints() == listEquipes.get(j)
-						.getPoints()) {
-
-					if (listEquipes.get(i).getGoalAverage() < listEquipes
-							.get(j).getGoalAverage()) {
-						nbrMeilleur++;
-					}
-				}
-			}
-			if (nbrMeilleur < 2) {
-				listVainqueurs.add(listEquipes.get(i));
-				nbrVainqueurs++;
-			}
-		}
-		for(Equipe e : listVainqueurs){
-			System.out.println(e.getNom());
-		}
-		
 		return listVainqueurs;
 	}
 

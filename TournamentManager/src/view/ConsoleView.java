@@ -285,7 +285,7 @@ public class ConsoleView extends AbstractView {
 		}
 	}
 
-	public void annonceVainqueur(Tournoi tournoi) {
+	public void annonceVainqueurTournoi(Tournoi tournoi) {
 		System.out.println("\n/!\\ VAINQUEUR DU TOURNOI: "
 				+ tournoi.getListTours().get(tournoi.getNumTourActuel() - 1)[0]
 						.getVainqueur().getNom() + " /!\\");
@@ -299,9 +299,9 @@ public class ConsoleView extends AbstractView {
 		System.out
 				.println("**************************************************");
 		for (int numPoule = 0; numPoule < tournoi.getListPoules().size(); numPoule++) {
-			System.out.println("\nPoule " + (numPoule + 1) + ":");
+			System.out.println("\nPoule " + (numPoule) + ":");
 			System.out.println("________");
-			afficherPoule(tournoi.getListPoules().get(numPoule));
+			afficherEquipesPoule(tournoi.getListPoules().get(numPoule));
 		}
 	}
 
@@ -311,10 +311,17 @@ public class ConsoleView extends AbstractView {
 		System.out.println("**************");
 	}
 
-	public void afficherPoule(Poule p) {
-		for (int numMatch = 0; numMatch < TournoiPoules.getNbrMatchsPoule(); numMatch++) {
-			afficherMatch(p.getListMatchs().get(numMatch));
+	public void afficherMatchsPoule(Poule p) {
+		for (Match m : p.getListMatchs()) {
+			afficherMatch(m);
 		}
+	}
+
+	public void afficherEquipesPoule(Poule p) {
+		for (Equipe e : p.getListEquipes()) {
+			System.out.print("- " + e.getNom() + " -");
+		}
+		System.out.print("\n");
 	}
 
 	public void afficherPoulesARemplir(TournoiPoules tournoi) {
@@ -327,10 +334,10 @@ public class ConsoleView extends AbstractView {
 		}
 	}
 
-	public void saisirScorePoule(TournoiPoules tournoi) {
+	public int choixRemplissagePoule(TournoiPoules tournoi) {
 		int choix = -1;
 		// afficher les poules a remplir
-		System.out.println("\nChoisir une poule:");
+		System.out.println("\nCHOISIR UNE POULE:");
 		afficherPoulesARemplir(tournoi);
 		while ((choix < 0) || (choix > (tournoi.getListPoules().size() - 1))) {
 			try {
@@ -349,14 +356,28 @@ public class ConsoleView extends AbstractView {
 				System.out.println("Format erroné.");
 			}
 		}
-		Poule p = tournoi.getListPoules().get(choix);
+		return choix;
+	}
+
+	public void saisirScorePoule(Poule p, int choix) {
 		System.out.println("\n* POULE " + choix + " *");
-		afficherPoule(p);
+		afficherMatchsPoule(p);
 		for (Match m : p.getListMatchs()) {
 			saisieScoreMatch(m, true);
-			//pour avoir les goal average et les points des matchs
-			m.getVainqueur();
 		}
-		p.setMatchsFinis(true);
+
+	}
+
+	public void afficherVainqueurPoule(Poule p, int choix){
+		System.out.print("\nLes vainqueurs de la poule "+choix+" sont: ");
+		for(int i = 0 ; i < p.getListVainqueurs().size() ; i++){
+			Equipe e = p.getListVainqueurs().get(i);
+			if (i == 0){
+				System.out.print(e.getNom());
+			}else{
+				System.out.print(" et "+e.getNom());
+			}
+		}
+		System.out.print("\n");
 	}
 }

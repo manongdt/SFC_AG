@@ -35,7 +35,7 @@ public class ControllerElimDirecte extends ControllerTournoi {
 				}
 			}
 		}
-		this.viewMode.annonceVainqueur(tournoi);
+		this.viewMode.annonceVainqueurTournoi(tournoi);
 	}
 
 	public void lancementTournoiEliminDirecte(TournoiElimDirecte tournoi) {

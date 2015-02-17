@@ -3,7 +3,7 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Equipe {
+public class Equipe implements Comparable<Equipe> {
 	// attributs
 	private int nbrJoueurs;
 	private Sport sport;
@@ -104,6 +104,19 @@ public class Equipe {
 
 	public void addGoalAverage(int goalAverage) {
 		this.goalAverage += goalAverage;
+	}
+
+	@Override
+	public int compareTo(Equipe o) {
+		int i = points > o.getPoints() ? 1 : points < o.getPoints() ? -1 : 0;
+		if(i != 0){
+			return i;
+		}
+		i = goalAverage > o.getGoalAverage() ? 1 : goalAverage < o.getGoalAverage() ? -1 : 0;
+		if(i != 0){
+			return i;
+		}
+		return 1;
 	}
 	
 }

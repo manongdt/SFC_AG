@@ -21,12 +21,21 @@ public class ControllerPoules extends ControllerTournoi {
 	}
 
 	public void start() {
-		
+
 		lancementTournoiPoules(tournoi);
 		// phase de poule
 		this.viewMode.afficherAnnoncePhasePoules(tournoi);
 		while (!this.passePhaseFinale(tournoi)) {
-			this.viewMode.saisirScorePoule(tournoi);
+			int choix = this.viewMode.choixRemplissagePoule(tournoi);
+			Poule p = tournoi.getListPoules().get(choix);
+			this.viewMode.saisirScorePoule(p, choix);
+			// pour avoir les goal average et les points des matchs
+			for (Match m : p.getListMatchs()) {
+				calculPointsGoalAvMatchs(m);
+			}
+			calculVainqueursPoule(p);
+			this.viewMode.afficherVainqueurPoule(p, choix);
+			p.setMatchsFinis(true);
 		}
 
 		// phase finale
@@ -37,6 +46,7 @@ public class ControllerPoules extends ControllerTournoi {
 			this.viewMode.afficherTour(tournoi);
 			Match[] tour = tournoi.getListTours().get(
 					tournoi.getNumTourActuel());
+			// tant qu'il manque des vainqueurs on continue
 			while (!this.passeTourSuivantED(tournoi)) {
 				for (Match m : tour) {
 					if (m.getVainqueur() == null) {
@@ -45,7 +55,7 @@ public class ControllerPoules extends ControllerTournoi {
 				}
 			}
 		}
-		this.viewMode.annonceVainqueur(tournoi);
+		this.viewMode.annonceVainqueurTournoi(tournoi);
 
 	}
 
@@ -81,13 +91,50 @@ public class ControllerPoules extends ControllerTournoi {
 	}
 
 	public boolean passePhaseFinale(TournoiPoules tournoi) {
-		if (tournoi.isPhasePouleTerminee()) {
+		if (phasePouleFini(tournoi)) {
 			for (Poule p : tournoi.getListPoules()) {
 				tournoi.addListEquiGagnantes(p.getListVainqueurs());
 			}
 			return true;
 		}
 		return false;
+	}
+
+	public boolean phasePouleFini(TournoiPoules tournoi) {
+		for (Poule p : tournoi.getListPoules()) {
+			if (!p.isMatchsFinis()) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public void calculVainqueursPoule(Poule p) {
+		Collections.sort(p.getListEquipes());
+		Collections.reverse(p.getListEquipes());
+		for (int i = 0; i < p.getListEquipes().size() && i < 2; i++) {
+			p.getListVainqueurs().add(p.getListEquipes().get(i));
+		}
+
+	}
+
+	public void calculPointsGoalAvMatchs(Match m) {
+		if (m.getScore1() > m.getScore2()) {
+			m.getEquipe1().addPoints(3);
+			m.getEquipe2().addPoints(0);
+			m.getEquipe1().addGoalAverage(m.getScore1() - m.getScore2());
+			m.getEquipe2().addGoalAverage(m.getScore2() - m.getScore1());
+		} else if (m.getScore1() < m.getScore2()) {
+			m.getEquipe1().addPoints(0);
+			m.getEquipe2().addPoints(3);
+			m.getEquipe1().addGoalAverage(m.getScore1() - m.getScore2());
+			m.getEquipe2().addGoalAverage(m.getScore2() - m.getScore1());
+		} else {
+			m.getEquipe1().addPoints(1);
+			m.getEquipe2().addPoints(1);
+			m.getEquipe1().addGoalAverage(m.getScore1() - m.getScore2());
+			m.getEquipe2().addGoalAverage(m.getScore2() - m.getScore1());
+		}
 	}
 
 	public void lancementPhaseFinale(TournoiPoules tournoi) {
