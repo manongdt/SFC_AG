@@ -116,7 +116,6 @@ public class ControllerTournoi {
 		for (Match m : tour) {
 			tournoi.getListEquiGagnantes().add(m.getVainqueur());
 		}
-		creationMatchsED(tournoi);
 		return true;
 	}
 

@@ -32,7 +32,7 @@ public class ControllerElimDirecte extends ControllerTournoi {
 			lancementTournoiEliminDirecte(tournoi);
 			while (tournoi.getNumTourActuel() < tournoi.getNbrTours()) {
 				this.viewConsole.afficherTour(tournoi);
-
+				creationMatchsED(tournoi);
 				while (!this.passeTourSuivantED(tournoi)) {
 					for (Match m : tournoi.getTour()) {
 						if (m.getVainqueur() == null) {

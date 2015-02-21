@@ -50,7 +50,7 @@ public class ControllerPoules extends ControllerTournoi {
 			this.viewConsole.afficherAnnoncePhaseFinale();
 			lancementPhaseFinale(tournoi);
 			while (tournoi.getNumTourActuel() < tournoi.getNbrTours()) {
-				
+				creationMatchsED(tournoi);
 				this.viewConsole.afficherTour(tournoi);
 				// tant qu'il manque des vainqueurs on continue
 				while (!this.passeTourSuivantED(tournoi)) {
