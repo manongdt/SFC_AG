@@ -149,6 +149,5 @@ public class ControllerPoules extends ControllerTournoi {
 		tournoi.getListEquiGagnantes().clear();
 		// placement aleatoire des equipes dans la liste
 		Collections.shuffle(tournoi.getListEquipesTourActuel());
-		creationMatchsED(tournoi);
 	}
 }

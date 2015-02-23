@@ -2,9 +2,14 @@ package controller;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
+import java.util.regex.Pattern;
+
+import javax.swing.JLabel;
 
 import view.AbstractView;
 import view.ConsoleView;
+import view.SwingView2;
 import model.ComparatorMeilleureAttaque;
 import model.ComparatorMeilleureDefense;
 //import view.SwingView;
@@ -17,6 +22,10 @@ public class ControllerTournoi {
 
 	protected String sView;
 	protected ConsoleView viewConsole;
+	protected String nomTournoi;
+	protected Sport sport;
+	protected boolean tournoiED;
+	protected int nbrEquipes;
 
 	public ControllerTournoi(String sView) {
 		super();
@@ -32,7 +41,8 @@ public class ControllerTournoi {
 
 			break;
 		case "S":
-			// this.viewMode = new SwingView();
+			SwingView2 sv = new SwingView2(this);
+			sv.setVisible(true);
 			break;
 		default:
 			// this.viewMode = new SwingView();
@@ -42,9 +52,48 @@ public class ControllerTournoi {
 
 	}
 
-	public void creerTournoi(boolean isTournoiPoules, String nomTournoi,
+	public boolean controlNomTournoi(String nom) {
+		Pattern pattern = Pattern.compile("^[a-zA-Z0-9 ]*$");
+		if (pattern.matcher(nom).find()) {
+			this.nomTournoi = nom;
+			return true;
+		}
+		return false;
+	}
+
+	public boolean controlSport(List<Sport> listSport, int iSport) {
+		if ((iSport < 0) || (iSport > listSport.size() - 1)) {
+			return false;
+		} else {
+			this.sport = listSport.get(iSport);
+		}
+		return true;
+	}
+
+	public boolean controlOrga(String orga) {
+		Pattern pattern = Pattern.compile("^[0-1]$");
+		if (pattern.matcher(orga).find()) {
+			if (orga == "0") {
+				this.tournoiED = false;
+			} else if(orga == "1"){
+				this.tournoiED = true;
+			}
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean controlNombreEq(int nbr){
+		if(nbr > 2){
+			this.nbrEquipes = nbr;
+			return true;
+		}
+		return false;
+	}
+
+	public void creerTournoi(boolean istournoiED, String nomTournoi,
 			Sport sport, int nbrEq) {
-		if (isTournoiPoules) {
+		if (istournoiED) {
 			ControllerPoules cP = new ControllerPoules(sView, viewConsole,
 					nomTournoi, sport, nbrEq);
 			cP.start();

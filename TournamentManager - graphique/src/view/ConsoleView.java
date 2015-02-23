@@ -40,7 +40,7 @@ public class ConsoleView {
 			System.out.println("\t*******************************\n");
 			System.out.println(" 1: Créer un nouveau tournoi");
 			System.out.println(" 0: Quitter le programme");
-			choix = verifSaisie(pattern, choix);
+			choix = saisie(pattern, choix);
 			switch (choix) {
 			case "1":
 				afficherSeparation();
@@ -55,7 +55,7 @@ public class ConsoleView {
 
 	}
 
-	public String verifSaisie(Pattern pattern, String choix) {
+	public String saisie(Pattern pattern, String choix) {
 		do {
 			sc = new Scanner(System.in);
 			System.out.print(" => ");
@@ -69,7 +69,7 @@ public class ConsoleView {
 		Sport sport = choixSportTournoi();
 		int orga = choixOrgaTournoi();
 		int nbrEq = choixNbrEquipe(orga, sport);
-
+		
 		if (orga == 0) {
 			controller.creerTournoi(true, nomTournoi, sport, nbrEq);
 
@@ -81,7 +81,7 @@ public class ConsoleView {
 	public String choixNomTournoi() {
 		System.out.println("- Nom du tournoi:");
 		Pattern pattern = Pattern.compile("^[a-zA-Z0-9 ]*$");
-		return verifSaisie(pattern, "");
+		return saisie(pattern, "");
 	}
 
 	public Sport choixSportTournoi() {
@@ -91,7 +91,7 @@ public class ConsoleView {
 		System.out.println("c: sport collectif");
 		System.out.println("i: sport individuel");
 		Pattern pattern = Pattern.compile("^[ci]$");
-		sType = verifSaisie(pattern, sType);
+		sType = saisie(pattern, sType);
 		char type = sType.charAt(0);
 		// chargement de la liste des sports
 		Chargement.chargerSport();
@@ -107,7 +107,7 @@ public class ConsoleView {
 	}
 
 	public void afficherSportsIndivConsole() {
-		int i = 1;
+		int i = 0;
 		for (Sport s : Chargement.getSportIndiv()) {
 			System.out.println(i + ": " + s.getNom());
 			i++;
@@ -115,7 +115,7 @@ public class ConsoleView {
 	}
 
 	public void afficherSportsCoConsole() {
-		int i = 1;
+		int i = 0;
 		for (Sport s : Chargement.getSportCo()) {
 			System.out.println(i + ": " + s.getNom());
 			i++;
@@ -123,8 +123,8 @@ public class ConsoleView {
 	}
 
 	public static Sport selectionSport(List<Sport> listSport) {
-		int index = 0;
-		while ((index < 1) || (index > listSport.size())) {
+		int index = -1;
+		while ((index < 0) || (index > listSport.size() - 1)) {
 			try {
 				sc = new Scanner(System.in);
 				System.out.print(" => ");
@@ -134,7 +134,7 @@ public class ConsoleView {
 				System.out.println("Format erroné.");
 			}
 		}
-		return listSport.get(index - 1);
+		return listSport.get(index);
 	}
 
 	public int choixOrgaTournoi() {
@@ -143,7 +143,7 @@ public class ConsoleView {
 		System.out.println("\n- Organisation du tournoi:");
 		System.out.println("0: tournoi à phase de poules/phase finale");
 		System.out.println("1: tournoi par élimination directe");
-		orga = verifSaisie(pattern, orga);
+		orga = saisie(pattern, orga);
 
 		return Integer.parseInt(orga);
 	}
@@ -156,7 +156,7 @@ public class ConsoleView {
 			String nbrPoules = "";
 			Pattern pattern = Pattern.compile("^([2-9]|1[0-9]|20)$");
 			System.out.println("\n- Nombre de poules de 4 - minimum 2:");
-			nbrPoules = verifSaisie(pattern, nbrPoules);
+			nbrPoules = saisie(pattern, nbrPoules);
 			nbr = Integer.parseInt(nbrPoules) * 4;
 			break;
 
@@ -164,7 +164,7 @@ public class ConsoleView {
 			String nbrEq = "";
 			Pattern pattern2 = Pattern.compile("^([2-9]|[1-7][0-9]|80)$");
 			System.out.println("\n- Nombre " + str + " - minimum 2:");
-			nbrEq = verifSaisie(pattern2, nbrEq);
+			nbrEq = saisie(pattern2, nbrEq);
 			nbr = Integer.parseInt(nbrEq);
 			break;
 		}
@@ -244,7 +244,7 @@ public class ConsoleView {
 			System.out.println("\t|| 3: Lancer le tournoi     ||");
 			System.out.println("\t==============================");
 			Pattern pattern = Pattern.compile("^[1-3]$");
-			choix = verifSaisie(pattern, choix);
+			choix = saisie(pattern, choix);
 
 			if (choix.equals("1")) {
 				afficherEquipes(tournoi);
@@ -290,7 +290,7 @@ public class ConsoleView {
 		System.out.println("2: Modifier la description");
 		System.out.println("3: Modifier le nombre de joueurs");
 		Pattern pattern = Pattern.compile("^[1-3]$");
-		choixModif = verifSaisie(pattern, choixModif);
+		choixModif = saisie(pattern, choixModif);
 		switch (choixModif) {
 		case "1":
 			modifNomEquipe(lst, choix);
@@ -307,14 +307,14 @@ public class ConsoleView {
 	public void modifNomEquipe(ArrayList<Equipe> lst, int choixEqui) {
 		System.out.print("Nouveau nom ");
 		Pattern pattern = Pattern.compile("^[a-zA-Z0-9 ]*$");
-		lst.get(choixEqui).setNom(verifSaisie(pattern, ""));
+		lst.get(choixEqui).setNom(saisie(pattern, ""));
 	}
 
 	public void modifNbrEquipe(ArrayList<Equipe> lst, int choixEqui) {
 		System.out.print("Nombre de joueurs ");
 		Pattern pattern = Pattern.compile("^([1-9]|[1-2][0-9])$");
 		String nbrJoueurs = "";
-		nbrJoueurs = verifSaisie(pattern, nbrJoueurs);
+		nbrJoueurs = saisie(pattern, nbrJoueurs);
 		lst.get(choixEqui).setNbr_joueurs(Integer.parseInt(nbrJoueurs));
 	}
 
@@ -322,7 +322,7 @@ public class ConsoleView {
 		System.out.print("Nouvelle description ");
 		Pattern pattern = Pattern.compile("^[a-zA-Z0-9 ]*$");
 		String desc = "";
-		desc = verifSaisie(pattern, desc);
+		desc = saisie(pattern, desc);
 		lst.get(choixEqui).setDescription(desc);
 	}
 
@@ -340,7 +340,7 @@ public class ConsoleView {
 							+ "vous devez compléter tous ses matchs.\n");
 		} else {
 			System.out.println("\n Tournoi '" + tournoi.getNom()
-					+ "' à élimination directe.");
+					+ "' à élimination directe."+tournoi.getSport().getNom());
 		}
 	}
 

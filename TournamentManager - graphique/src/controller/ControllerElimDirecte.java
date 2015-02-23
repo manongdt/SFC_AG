@@ -31,8 +31,8 @@ public class ControllerElimDirecte extends ControllerTournoi {
 			this.viewConsole.alerteLancement(tournoi);
 			lancementTournoiEliminDirecte(tournoi);
 			while (tournoi.getNumTourActuel() < tournoi.getNbrTours()) {
-				this.viewConsole.afficherTour(tournoi);
 				creationMatchsED(tournoi);
+				this.viewConsole.afficherTour(tournoi);
 				while (!this.passeTourSuivantED(tournoi)) {
 					for (Match m : tournoi.getTour()) {
 						if (m.getVainqueur() == null) {
@@ -52,7 +52,7 @@ public class ControllerElimDirecte extends ControllerTournoi {
 	public void lancementTournoiEliminDirecte(TournoiElimDirecte tournoi) {
 		// placement aleatoire des equipes dans la liste
 		Collections.shuffle(tournoi.getListEquipesTourActuel());
-		creationMatchsED(tournoi);
+		//creationMatchsED(tournoi);
 	}
 
 }
