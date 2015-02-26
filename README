@@ -1,5 +1,27 @@
-attention infos super importantes n2
-Détails du projet : https://github.com/anunesse/UltimateTournament
+Projet Tournament Manager  Gaillardot M & Lanners W
 
-rebase 
-fetch
+
+Fonctionnalités implémentées :
+
+- Possibilité de choisir 2 types de tournois : 
+	- Elimination directe
+	- Phase de poules / Phase finale
+
+- Création d’un tournoi avec la possibilité de :
+	- Définir un nombre d’équipes ou de poules
+	- Modifier les équipes selon 3 paramètres : nom, nombre de joueurs et description
+	- Saisir le score d’un match
+	- Passer au tour suivant lorsque tous les scores sont renseignés
+
+- Utilisation de Regex pour gérer les erreurs
+
+
+- Le projet peut-être lancé en mode Console ou Graphique (Swing)
+
+
+Fonctionnalités bonus :
+
+- Conservation d’un goal average pour départager les équipes ayant le même nombre de points (lors des phases de poules)
+
+- Conservation des scores pour afficher les 3 équipes ayant la meilleure attaque et défense du tournoi
+
