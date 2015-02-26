@@ -7,55 +7,97 @@ import java.util.Scanner;
 import java.util.regex.Pattern;
 
 import controller.Chargement;
+import controller.ControllerPoule;
+import controller.ControllerTournoi;
 import model.Equipe;
 import model.Match;
 import model.Poule;
 import model.Sport;
 import model.Tournoi;
-import model.TournoiPoules;
+import model.TournoiPoule;
 
-public class ConsoleView extends AbstractView {
+public class ConsoleView implements ViewInterface {
 
 	private static Scanner sc = new Scanner(System.in);
+	private ControllerTournoi controller;
 
 	public ConsoleView() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
+	public ConsoleView(ControllerTournoi controller) {
+		super();
+		this.controller = controller;
+	}
+
 	public void afficherMenuPrincipal() {
+		String choix = "";
+		Pattern pattern = Pattern.compile("^[0-1]$");
+
+		choix = "";
 		System.out.println("\n\t*******************************");
 		System.out.println("\t**  GESTIONNAIRE DE TOURNOI  **");
 		System.out.println("\t*******************************\n");
 		System.out.println(" 1: Créer un nouveau tournoi");
-		afficherSeparation();
+		System.out.println(" 0: Quitter le programme");
+		choix = saisie(pattern, choix);
+		switch (choix) {
+		case "1":
+			afficherSeparation();
+			break;
+		case "0":
+			System.out.println("\nSortie du programme.");
+			System.exit(0);
+		}
+
+	}
+
+	public boolean choixOrgaTournoi() {
+		String orga = "";
+		Pattern pattern = Pattern.compile("^[0-1]$");
+		System.out.println("- Organisation du tournoi:");
+		System.out.println("0: tournoi à phase de poules/phase finale");
+		System.out.println("1: tournoi par élimination directe");
+		orga = saisie(pattern, orga);
+		if (orga.equals("0")) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+
+	public void creationTournoi(Tournoi tournoi) {
+		tournoi.setNom(choixNomTournoi());
+		tournoi.setSport(choixSportTournoi());
+		tournoi.setNbrEquipes(choixNbrEquipe(tournoi.isTournoiPoules(),
+				tournoi.getSport()));
+	}
+
+	public String saisie(Pattern pattern, String choix) {
+		do {
+			sc = new Scanner(System.in);
+			System.out.print(" => ");
+			choix = sc.nextLine();
+		} while (!pattern.matcher(choix).find());
+		return choix;
 	}
 
 	public String choixNomTournoi() {
-		System.out.println("- Nom du tournoi:");
+		System.out.println("\n- Nom du tournoi:");
 		Pattern pattern = Pattern.compile("^[a-zA-Z0-9 ]*$");
-		String nom_tournoi;
-		do {
-			System.out.print(" => ");
-			nom_tournoi = sc.nextLine();
-		} while (!pattern.matcher(nom_tournoi).find());
-		return nom_tournoi;
+		return saisie(pattern, "");
 	}
 
 	public Sport choixSportTournoi() {
 		Sport sport = null;
-		String sType;
+		String sType = "";
 		System.out.println("\n- Type de sport:");
 		System.out.println("c: sport collectif");
 		System.out.println("i: sport individuel");
 		Pattern pattern = Pattern.compile("^[ci]$");
-		do {
-			System.out.print(" => ");
-			sType = sc.nextLine();
-		} while (!pattern.matcher(sType).find());
-
+		sType = saisie(pattern, sType);
 		char type = sType.charAt(0);
-
 		// chargement de la liste des sports
 		Chargement.chargerSport();
 		System.out.println("\n- Sport du tournoi: ");
@@ -69,9 +111,25 @@ public class ConsoleView extends AbstractView {
 		return sport;
 	}
 
+	public void afficherSportsIndivConsole() {
+		int i = 0;
+		for (Sport s : Chargement.getSportIndiv()) {
+			System.out.println(i + ": " + s.getNom());
+			i++;
+		}
+	}
+
+	public void afficherSportsCoConsole() {
+		int i = 0;
+		for (Sport s : Chargement.getSportCo()) {
+			System.out.println(i + ": " + s.getNom());
+			i++;
+		}
+	}
+
 	public static Sport selectionSport(List<Sport> listSport) {
-		int index = 0;
-		while ((index < 1) || (index > listSport.size())) {
+		int index = -1;
+		while ((index < 0) || (index > listSport.size() - 1)) {
 			try {
 				sc = new Scanner(System.in);
 				System.out.print(" => ");
@@ -81,86 +139,31 @@ public class ConsoleView extends AbstractView {
 				System.out.println("Format erroné.");
 			}
 		}
-		return listSport.get(index - 1);
+		return listSport.get(index);
 	}
 
-	public int choixOrgaTournoi() {
-		int orga = -1;
-		System.out.println("\n- Organisation du tournoi:");
-		System.out.println("0: tournoi à phase de poules/phase finale");
-		System.out.println("1: tournoi par élimination directe");
-		while ((orga != 0) && (orga != 1)) {
-			try {
-				sc = new Scanner(System.in);
-				System.out.print(" => ");
-				orga = sc.nextInt();
-
-			} catch (InputMismatchException e) {
-				System.out.println("Format erroné.");
-			}
-		}
-		return orga;
-	}
-
-	public int choixNbrEquipe(int orgaTournoi, Sport sport) {
+	public int choixNbrEquipe(boolean istournoiPoule, Sport sport) {
 		int nbr = 0;
 		String str = sport.getType() == 'c' ? "d'équipes" : "de joueurs";
-		switch (orgaTournoi) {
-		case 0:
-			int nbr_poules = 0;
+		if (istournoiPoule) {
+			String nbrPoules = "";
+			Pattern pattern = Pattern.compile("^([2-9]|1[0-9]|20)$");
 			System.out.println("\n- Nombre de poules de 4 - minimum 2:");
-			while (nbr_poules < 2) {
-				try {
-					System.out.print(" => ");
-					nbr_poules = sc.nextInt();
-
-				} catch (InputMismatchException e) {
-					System.out.println("Format erroné.");
-				}
-			}
-			nbr = nbr_poules * 4;
-			break;
-
-		case 1:
+			nbrPoules = saisie(pattern, nbrPoules);
+			nbr = Integer.parseInt(nbrPoules) * 4;
+		} else {
+			String nbrEq = "";
+			Pattern pattern2 = Pattern.compile("^([2-9]|[1-7][0-9]|80)$");
 			System.out.println("\n- Nombre " + str + " - minimum 2:");
-			while (nbr < 2) {
-				try {
-					System.out.print(" => ");
-					nbr = sc.nextInt();
-
-				} catch (InputMismatchException e) {
-					System.out.println("Format erroné.");
-				}
-			}
-			break;
+			nbrEq = saisie(pattern2, nbrEq);
+			nbr = Integer.parseInt(nbrEq);
 		}
 		return nbr;
-	}
-
-	public void afficherSportsIndivConsole() {
-		int i = 1;
-		for (Sport s : Chargement.getSportIndiv()) {
-			System.out.println(i + ": " + s.getNom());
-			i++;
-		}
-	}
-
-	public void afficherSportsCoConsole() {
-		int i = 1;
-		for (Sport s : Chargement.getSportCo()) {
-			System.out.println(i + ": " + s.getNom());
-			i++;
-		}
 	}
 
 	public void afficherSeparation() {
 		System.out
 				.println("\n --------------------------------------------------\n");
-	}
-
-	public void afficherMatch(Match m) {
-		System.out.println(" >> " + m.getEquipe1().getNom() + " vs "
-				+ m.getEquipe2().getNom());
 	}
 
 	public void afficherTour(Tournoi tournoi) {
@@ -171,6 +174,14 @@ public class ConsoleView extends AbstractView {
 		for (int i = 0; i < tournoi.getTour().size(); i++) {
 			afficherMatch(tournoi.getTour().get(i));
 		}
+
+		for (Match m : tournoi.getTour()) {
+			saisieScoreMatch(m, false);
+		}
+	}
+
+	public void afficherMatch(Match m) {
+		System.out.println(" >> " + m.toString());
 	}
 
 	public void saisieScoreMatch(Match m, boolean matchPoule) {
@@ -215,30 +226,43 @@ public class ConsoleView extends AbstractView {
 		return s;
 	}
 
-	public int choixSousMenu() {
-		int sm = 0;
-		afficherSeparation();
-		System.out.println("\t==============================");
-		System.out.println("\t|| 1: Modifier les équipes  ||");
-		System.out.println("\t|| 2: Lancer le tournoi     ||");
-		System.out.println("\t==============================");
-		while ((sm != 1) && (sm != 2)) {
-			try {
-				sc = new Scanner(System.in);
-				System.out.print(" => ");
-				sm = sc.nextInt();
+	public void modifierEquipes(Tournoi tournoi) {
+		String choix;
+		do {
+			choix = "";
+			afficherSeparation();
+			System.out.println("\t==============================");
+			System.out.println("\t|| 1: Afficher les équipes  ||");
+			System.out.println("\t|| 2: Modifier les équipes  ||");
+			System.out.println("\t|| 3: Lancer le tournoi     ||");
+			System.out.println("\t==============================");
+			Pattern pattern = Pattern.compile("^[1-3]$");
+			choix = saisie(pattern, choix);
 
-			} catch (InputMismatchException e) {
-				System.out.println("Format erroné.");
+			if (choix.equals("1")) {
+				afficherEquipes(tournoi);
+			} else if (choix.equals("2")) {
+				modifierEquipe(tournoi);
 			}
+		} while (!choix.equals("3"));
+		alerteLancement(tournoi);
+	}
+
+	public void afficherEquipes(Tournoi tournoi) {
+		ArrayList<Equipe> lst_equipes = tournoi.getListEquipes();
+		for (Equipe e : lst_equipes) {
+			System.out.println("Nom: " + e.getNom() + " - Nombre de joueurs: "
+					+ e.getNbr_joueurs() + " - Description: "
+					+ e.getDescription());
 		}
-		return sm;
 	}
 
 	public void modifierEquipe(Tournoi tournoi) {
 		ArrayList<Equipe> lst = tournoi.getListEquipes();
-		System.out.println("\nQuelle équipe souhaitez-vous modifier ?");
 		int i = 0, choix = -1;
+		String choixModif = "";
+
+		System.out.println("\nQuelle équipe souhaitez-vous modifier ?");
 		for (Equipe e : lst) {
 			System.out.println(i + ": " + e.getNom());
 			i++;
@@ -254,17 +278,46 @@ public class ConsoleView extends AbstractView {
 			}
 		}
 
-		System.out.println("Modification de l'équipe '"
+		System.out.println("\nModification de l'équipe '"
 				+ lst.get(choix).getNom() + ":");
-		System.out.print("Nom:");
-		Pattern pattern = Pattern.compile("^[a-zA-Z0-9 ]*$");
-		String nomEquipe;
-		do {
-			sc = new Scanner(System.in);
-			nomEquipe = sc.nextLine();
-		} while (!pattern.matcher(nomEquipe).find());
-		lst.get(choix).setNom(nomEquipe);
+		System.out.println("1: Modifier le nom");
+		System.out.println("2: Modifier la description");
+		System.out.println("3: Modifier le nombre de joueurs");
+		Pattern pattern = Pattern.compile("^[1-3]$");
+		choixModif = saisie(pattern, choixModif);
+		switch (choixModif) {
+		case "1":
+			modifNomEquipe(lst, choix);
+			break;
+		case "2":
+			modifDescriEquipe(lst, choix);
+			break;
+		case "3":
+			modifNbrEquipe(lst, choix);
+			break;
+		}
+	}
 
+	public void modifNomEquipe(ArrayList<Equipe> lst, int choixEqui) {
+		System.out.print("Nouveau nom ");
+		Pattern pattern = Pattern.compile("^[a-zA-Z0-9 ]*$");
+		lst.get(choixEqui).setNom(saisie(pattern, ""));
+	}
+
+	public void modifNbrEquipe(ArrayList<Equipe> lst, int choixEqui) {
+		System.out.print("Nombre de joueurs ");
+		Pattern pattern = Pattern.compile("^([1-9]|[1-2][0-9])$");
+		String nbrJoueurs = "";
+		nbrJoueurs = saisie(pattern, nbrJoueurs);
+		lst.get(choixEqui).setNbr_joueurs(Integer.parseInt(nbrJoueurs));
+	}
+
+	public void modifDescriEquipe(ArrayList<Equipe> lst, int choixEqui) {
+		System.out.print("Nouvelle description ");
+		Pattern pattern = Pattern.compile("^[a-zA-Z0-9 ]*$");
+		String desc = "";
+		desc = saisie(pattern, desc);
+		lst.get(choixEqui).setDescription(desc);
 	}
 
 	public void alerteLancement(Tournoi tournoi) {
@@ -285,12 +338,7 @@ public class ConsoleView extends AbstractView {
 		}
 	}
 
-	public void annonceVainqueurTournoi(Tournoi tournoi) {
-		System.out.println("\n/!\\ VAINQUEUR DU TOURNOI: "
-				+ tournoi.getTour().get(0).getVainqueur().getNom() + " /!\\");
-	}
-
-	public void afficherAnnoncePhasePoules(TournoiPoules tournoi) {
+	public void afficherAnnoncePhasePoules(TournoiPoule tournoi) {
 		System.out
 				.println("\n**************************************************");
 		System.out
@@ -323,7 +371,7 @@ public class ConsoleView extends AbstractView {
 		System.out.print("\n");
 	}
 
-	public void afficherPoulesARemplir(TournoiPoules tournoi) {
+	public void afficherPoulesARemplir(TournoiPoule tournoi) {
 		int i = 0;
 		for (Poule p : tournoi.getListPoules()) {
 			if (!p.isMatchsFinis()) {
@@ -333,7 +381,7 @@ public class ConsoleView extends AbstractView {
 		}
 	}
 
-	public int choixRemplissagePoule(TournoiPoules tournoi) {
+	public int choixRemplissagePoule(TournoiPoule tournoi) {
 		int choix = -1;
 		// afficher les poules a remplir
 		System.out.println("\nCHOISIR UNE POULE:");
@@ -367,16 +415,74 @@ public class ConsoleView extends AbstractView {
 
 	}
 
-	public void afficherVainqueurPoule(Poule p, int choix){
-		System.out.print("\nLes vainqueurs de la poule "+choix+" sont: ");
-		for(int i = 0 ; i < p.getListVainqueurs().size() ; i++){
+	public void afficherVainqueurPoule(Poule p, int choix) {
+		System.out.print("\nLes vainqueurs de la poule " + choix + " sont: ");
+		for (int i = 0; i < p.getListVainqueurs().size(); i++) {
 			Equipe e = p.getListVainqueurs().get(i);
-			if (i == 0){
+			if (i == 0) {
 				System.out.print(e.getNom());
-			}else{
-				System.out.print(" et "+e.getNom());
+			} else {
+				System.out.print(" et " + e.getNom());
 			}
 		}
 		System.out.print("\n");
 	}
+
+	public void annonceVainqueurTournoi(Tournoi tournoi) {
+		System.out.println("\n/!\\ VAINQUEUR DU TOURNOI: "
+				+ tournoi.getTour().get(0).getVainqueur().getNom() + " /!\\\n");
+	}
+
+	public void afficherStatistiques(ArrayList<Equipe> meilAtta,
+			ArrayList<Equipe> meilDef) {
+		System.out.println("\n\t----------------");
+		System.out.println("\t| STATISTIQUES |");
+		System.out.println("\t----------------");
+		System.out.print("\n Meilleure attaque : ");
+		for (Equipe e : meilAtta) {
+			System.out.print("- " + e.getNom() + " -");
+		}
+		System.out.print("\n Meilleure défense : ");
+		for (Equipe e : meilDef) {
+			System.out.print("- " + e.getNom() + " -");
+		}
+		afficherSeparation();
+	}
+
+	public void deroulementElimDirecte(Tournoi tournoi,
+			ControllerTournoi controller) {
+		do {
+			afficherTour(tournoi);
+			controller.passeTourSuivantED(tournoi);
+		} while (tournoi.getNumTourActuel() < tournoi.getNbrTours());
+		annonceVainqueurTournoi(tournoi);
+		afficherStatistiques(controller.statsMeilleureAttaque(tournoi),
+				controller.statsMeilleureDefense(tournoi));
+	}
+
+	public void deroulementPoule(TournoiPoule tournoi,
+			ControllerPoule controller) {
+		// phase de poule
+		afficherAnnoncePhasePoules(tournoi);
+		while (!controller.passePhaseFinale(tournoi)) {
+			int choix = choixRemplissagePoule(tournoi);
+			Poule p = tournoi.getListPoules().get(choix);
+			saisirScorePoule(p, choix);
+			// obtenir goal averages et points matchs
+			controller.finMatchsPoule(p);
+			afficherVainqueurPoule(p, choix);
+		}
+		// phase finale
+		afficherAnnoncePhaseFinale();
+		controller.lancementPhaseFinale(tournoi);
+		do {
+			afficherTour(tournoi);
+			controller.passeTourSuivantED(tournoi);
+		} while (tournoi.getNumTourActuel() < tournoi.getNbrTours());
+
+		annonceVainqueurTournoi(tournoi);
+		afficherStatistiques(controller.statsMeilleureAttaque(tournoi),
+				controller.statsMeilleureDefense(tournoi));
+	}
+
 }

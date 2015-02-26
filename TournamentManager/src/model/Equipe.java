@@ -12,6 +12,8 @@ public class Equipe implements Comparable<Equipe> {
 	private int id;
 	private int points;
 	private int goalAverage;
+	private int totalButs;
+	private int totalButsEncaisse;
 	private ArrayList<Joueur> list_joueurs = new ArrayList<Joueur>();
 
 	public Equipe() {
@@ -27,8 +29,10 @@ public class Equipe implements Comparable<Equipe> {
 		this.nbrJoueurs = sport.getNbr_joueurs();
 		this.nom = "Equipe" + numEquipe;
 		this.goalAverage = 0;
-		this.points =0;
-		this.description = "Aucune description de l'équipe disponible pour le moment.";
+		this.points = 0;
+		this.totalButs = 0;
+		this.totalButsEncaisse = 0;
+		this.description = "Aucune description de l'équipe disponible.";
 		for (int i = 0; i < nbrJoueurs; i++) {
 			list_joueurs.add(new Joueur(this, i));
 		}
@@ -106,6 +110,23 @@ public class Equipe implements Comparable<Equipe> {
 		this.goalAverage += goalAverage;
 	}
 
+	public int getTotalButs() {
+		return totalButs;
+	}
+
+	public void addTotalButs(int buts) {
+		this.totalButs += buts;
+	}
+	
+
+	public int getTotalButsEncaisse() {
+		return totalButsEncaisse;
+	}
+
+	public void addTotalButsEncaisse(int totalButsEncaisse) {
+		this.totalButsEncaisse += totalButsEncaisse;
+	}
+
 	@Override
 	public int compareTo(Equipe o) {
 		int i = points > o.getPoints() ? 1 : points < o.getPoints() ? -1 : 0;
@@ -117,6 +138,11 @@ public class Equipe implements Comparable<Equipe> {
 			return i;
 		}
 		return 1;
+	}
+	
+	@Override
+	public String toString(){
+		return nom;
 	}
 	
 }

@@ -11,12 +11,14 @@ import model.Sport;
 public class Chargement {
 
 	private static String fichier_sports = "sports.txt";
-	private static List<Sport> sport_co = new ArrayList<Sport>();
-	private static List<Sport> sport_indiv = new ArrayList<Sport>();
+	private static List<Sport> sport_co;
+	private static List<Sport> sport_indiv;
 
 	public static void chargerSport() {
 
 		try {
+			sport_co = new ArrayList<Sport>();
+			sport_indiv = new ArrayList<Sport>();
 			FileReader fr = new FileReader(fichier_sports);
 			BufferedReader br = new BufferedReader(fr);
 			String line = br.readLine();

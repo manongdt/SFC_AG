@@ -27,16 +27,17 @@ public class Match {
 
 	public Equipe getVainqueur() {
 		if (score1 != -1 && score2 != -1) {
-			if (score1 > score2) {
-				return equipe1;
-			} else if (score1 < score2) {
-				return equipe2;
-			} else {
-				return null;
-			}
+			return score1 > score2 ? equipe1 : score1 < score2 ? equipe2 : null;
 		} else {
 			return null;
 		}
+	}
+
+	public boolean isMatchFini() {
+		if (score1 != -1 && score2 != -1) {
+			return true;
+		}
+		return false;
 	}
 
 	public Equipe getEquipe1() {
@@ -69,6 +70,36 @@ public class Match {
 
 	public void setScore2(int score2) {
 		this.score2 = score2;
+	}
+
+	public String toString() {
+		return equipe1.getNom() + " vs " + equipe2.getNom();
+	}
+
+	public void calculButsTotaux() {
+		equipe1.addTotalButs(score1);
+		equipe2.addTotalButs(score2);
+		equipe1.addTotalButsEncaisse(score2);
+		equipe2.addTotalButsEncaisse(score1);
+	}
+
+	public void calculPointsGoalAvMatchs() {
+		if (score1 > score2) {
+			equipe1.addPoints(3);
+			equipe2.addPoints(0);
+			equipe1.addGoalAverage(score1 - score2);
+			equipe2.addGoalAverage(score2 - score1);
+		} else if (score1 < score2) {
+			equipe1.addPoints(0);
+			equipe2.addPoints(3);
+			equipe1.addGoalAverage(score1 - score2);
+			equipe2.addGoalAverage(score2 - score1);
+		} else {
+			equipe1.addPoints(1);
+			equipe2.addPoints(1);
+			equipe1.addGoalAverage(score1 - score2);
+			equipe2.addGoalAverage(score2 - score1);
+		}
 	}
 
 }
