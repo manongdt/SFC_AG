@@ -1,6 +1,11 @@
 package model;
 
+/**
+ * @author Manon Gaillardot et Willian Lanners
+ *
+ */
 public class Match {
+
 	// attributs
 	private Equipe equipe1;
 	private Equipe equipe2;
@@ -76,6 +81,7 @@ public class Match {
 		return equipe1.getNom() + " vs " + equipe2.getNom();
 	}
 
+	// calcul des buts totaux
 	public void calculButsTotaux() {
 		equipe1.addTotalButs(score1);
 		equipe2.addTotalButs(score2);
@@ -83,6 +89,7 @@ public class Match {
 		equipe2.addTotalButsEncaisse(score1);
 	}
 
+	// calcul du goal average
 	public void calculPointsGoalAvMatchs() {
 		if (score1 > score2) {
 			equipe1.addPoints(3);

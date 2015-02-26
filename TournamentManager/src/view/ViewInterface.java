@@ -9,7 +9,12 @@ import model.Tournoi;
 import model.TournoiPoule;
 
 /**
- * @author Manon Gaillardot
+ * @author Manon Gaillardot et Willian Lanners
+ *
+ */
+
+/**
+ * Interface qui gere les deux vues
  *
  */
 public interface ViewInterface {

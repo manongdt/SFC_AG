@@ -5,23 +5,27 @@ package model;
 
 import java.util.ArrayList;
 
+/**
+ * @author Manon Gaillardot et Willian Lanners
+ *
+ */
 public class Poule {
 
+	// attributs
 	private int IDPoule;
 	private ArrayList<Match> listMatchs = new ArrayList<Match>();
 	private ArrayList<Equipe> listEquipes = new ArrayList<Equipe>();
 	private ArrayList<Equipe> listVainqueurs = new ArrayList<Equipe>();
-	private boolean matchsFinis;
 
 	public Poule() {
 		super();
 	}
 
+	// constructeur
 	public Poule(ArrayList<Equipe> lstEq, ArrayList<Match> lstMatch, int IDPoule) {
 		this.IDPoule = IDPoule;
 		this.listEquipes.addAll(lstEq);
 		this.listMatchs.addAll(lstMatch);
-		this.matchsFinis = false;
 	}
 
 	public ArrayList<Match> getListMatchs() {
@@ -48,15 +52,6 @@ public class Poule {
 		this.listVainqueurs = listVainqueurs;
 	}
 
-	public boolean isMatchsFinis() {
-		for (Match m : listMatchs) {
-			if (m.isMatchFini() == false) {
-				return false;
-			}
-		}
-		return true;
-	}
-
 	public int getIDPoule() {
 		return IDPoule;
 	}
@@ -68,6 +63,16 @@ public class Poule {
 	@Override
 	public String toString() {
 		return "Poule " + IDPoule;
+	}
+
+	// verifie que les matchs de la poule sont termines
+	public boolean isMatchsFinis() {
+		for (Match m : listMatchs) {
+			if (m.isMatchFini() == false) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 }

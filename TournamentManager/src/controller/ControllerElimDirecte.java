@@ -7,6 +7,11 @@ import view.SwingView;
 import view.ViewInterface;
 import model.TournoiElimDirecte;
 
+/**
+ * @author Manon Gaillardot et Willian Lanners
+ *
+ */
+
 public class ControllerElimDirecte extends ControllerTournoi {
 
 	private TournoiElimDirecte tournoi;
@@ -40,6 +45,7 @@ public class ControllerElimDirecte extends ControllerTournoi {
 	public void initTournoiEliminDirecte(TournoiElimDirecte tournoi) {
 		// placement aleatoire des equipes dans la liste
 		Collections.shuffle(tournoi.getListEquipesTourActuel());
+		//creation des matchs du premier tour
 		creationMatchsED(tournoi);
 	}
 

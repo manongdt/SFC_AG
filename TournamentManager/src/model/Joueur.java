@@ -1,5 +1,9 @@
 package model;
 
+/**
+ * @author Manon Gaillardot et Willian Lanners
+ *
+ */
 public class Joueur {
 
 	// attributs
@@ -13,19 +17,12 @@ public class Joueur {
 	}
 
 	// constructeur
-	public Joueur (Equipe equ, int num) {
+	public Joueur(Equipe equ, int num) {
 		// valeurs par defaut
-		this.nom = equ.getNom()+"_Player"+num;
+		this.nom = equ.getNom() + "_Player" + num;
 		this.prenom = "Bob";
 		this.age = 20;
 	}
-	
-//	//constructeur jeu individuel
-//	public Joueur (int numJoueur){
-//		this.nom = "Player"+numJoueur;
-//		this.prenom = "Bob";
-//		this.age = 20;
-//	}
 
 	public String getNom() {
 		return nom;

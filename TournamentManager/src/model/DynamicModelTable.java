@@ -9,13 +9,13 @@ import java.util.regex.Pattern;
 import javax.swing.table.AbstractTableModel;
 
 /**
- * @author Manon Gaillardot
+ * @author Manon Gaillardot et Willian Lanners
  *
  */
 public class DynamicModelTable extends AbstractTableModel {
 
 	/**
-	 * 
+	 * table modele pour le tableau en swing view dans la vue poule
 	 */
 	private static final long serialVersionUID = -148171706531619190L;
 	private ArrayList<Match> matchs = new ArrayList<Match>();
@@ -57,14 +57,14 @@ public class DynamicModelTable extends AbstractTableModel {
 			return null; // Ne devrait jamais arriver
 		}
 	}
-	
-	public void setMatchs(ArrayList<Match> listMatchs){
+
+	public void setMatchs(ArrayList<Match> listMatchs) {
 		matchs = listMatchs;
 		fireTableDataChanged();
 	}
-	
-	public void clear(){
-		for(int i = 0; i < matchs.size();i++){
+
+	public void clear() {
+		for (int i = 0; i < matchs.size(); i++) {
 			matchs.clear();
 		}
 	}

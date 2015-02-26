@@ -3,9 +3,6 @@
  */
 package view;
 
-import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.FlowLayout;
 import java.awt.Frame;
 
 import javax.swing.JButton;
@@ -15,12 +12,10 @@ import javax.swing.border.BevelBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.SoftBevelBorder;
 
-import controller.ControllerElimDirecte;
 import controller.ControllerTournoi;
 
 import javax.swing.JLabel;
 import javax.swing.JComboBox;
-import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
@@ -29,9 +24,6 @@ import javax.swing.JTextArea;
 import model.Equipe;
 import model.Match;
 import model.Tournoi;
-import model.TournoiElimDirecte;
-
-import javax.swing.JScrollBar;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -41,9 +33,10 @@ import java.awt.Font;
 import java.awt.Color;
 
 /**
- * @author Manon Gaillardot
+ * @author Manon Gaillardot et Willian Lanners
  *
  */
+@SuppressWarnings("serial")
 public class ElimDirecteView extends JDialog {
 
 	private ControllerTournoi controller;
@@ -293,10 +286,9 @@ public class ElimDirecteView extends JDialog {
 		lMatchsTourOK.setBounds(382, 281, 213, 22);
 		getContentPane().add(lMatchsTourOK);
 
-		
-		if(tournoi.isTournoiPoules()){
+		if (tournoi.isTournoiPoules()) {
 			lOrganisation = new JLabel("PHASE FINALE");
-		}else{
+		} else {
 			lOrganisation = new JLabel("ELIMINATION DIRECTE");
 		}
 		lOrganisation.setForeground(new Color(51, 102, 204));
@@ -310,6 +302,7 @@ public class ElimDirecteView extends JDialog {
 		setVisible(true);
 	}
 
+	
 	public void bEnregisterActionPerformed() {
 		Pattern pattern = Pattern
 				.compile("^([0-9]|[1-9][0-9]|1[0-9][0-9]|200)$");
@@ -339,7 +332,8 @@ public class ElimDirecteView extends JDialog {
 	public void bSuivantActionPerformed(ActionEvent e) {
 		// si fin du tournoi
 		if (controller.finTournoiED(tournoi)) {
-			lFinTournoi.setText("TOURNOI TERMINE ! Vainqueur : "+tournoi.getTour().get(0).getVainqueur().getNom());
+			lFinTournoi.setText("TOURNOI TERMINE ! Vainqueur : "
+					+ tournoi.getTour().get(0).getVainqueur().getNom());
 			lFinTournoi.setVisible(true);
 			bStatistiques.setVisible(true);
 			bRecommencer.setVisible(true);
@@ -384,6 +378,7 @@ public class ElimDirecteView extends JDialog {
 		}
 	}
 
+	//initialisation des champs
 	public void initChamps() {
 		Equipe e1 = cbMatchs.getItemAt(cbMatchs.getSelectedIndex())
 				.getEquipe1();

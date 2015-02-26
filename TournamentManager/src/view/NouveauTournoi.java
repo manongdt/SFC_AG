@@ -11,9 +11,6 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import controller.Chargement;
-import controller.ControllerElimDirecte;
-import controller.ControllerPoule;
-import controller.ControllerTournoi;
 
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -22,8 +19,6 @@ import javax.swing.JComboBox;
 
 import model.Sport;
 import model.Tournoi;
-import model.TournoiElimDirecte;
-import model.TournoiPoule;
 
 import java.awt.Frame;
 import java.awt.event.ActionListener;
@@ -33,9 +28,10 @@ import java.awt.Font;
 import java.awt.Color;
 
 /**
- * @author Manon Gaillardot
+ * @author Manon Gaillardot et Willian Lanners
  *
  */
+@SuppressWarnings("serial")
 public class NouveauTournoi extends JDialog {
 
 	private Tournoi tournoi;
@@ -229,7 +225,7 @@ public class NouveauTournoi extends JDialog {
 			this.dispose();
 		} else {
 			JOptionPane.showMessageDialog(null,
-					"Format incorrect.\n-Nombre d'équipes inférieur à 80.");
+					"Format incorrect.\n-Nombre d'équipes compris entre 2 et 80.\n");
 		}
 	}
 

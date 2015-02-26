@@ -3,7 +3,6 @@
  */
 package view;
 
-import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.Frame;
 
@@ -11,7 +10,6 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
@@ -24,28 +22,23 @@ import model.DynamicModelTable;
 import model.Equipe;
 import model.Match;
 import model.Poule;
-import model.Tournoi;
 import model.TournoiPoule;
-import controller.ControllerElimDirecte;
 import controller.ControllerPoule;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.util.Vector;
-import java.util.regex.Pattern;
 import java.awt.SystemColor;
-
-import javax.swing.border.BevelBorder;
-import javax.swing.border.SoftBevelBorder;
 import java.awt.Color;
 import java.awt.Font;
 
 /**
- * @author Manon Gaillardot
+ * @author Manon Gaillardot et Willian Lanners
  *
  */
+@SuppressWarnings("serial")
 public class PouleView extends JDialog {
 
+	@SuppressWarnings("unused")
 	private ControllerPoule controller;
 	private TournoiPoule tournoi;
 

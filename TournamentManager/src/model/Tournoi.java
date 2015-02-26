@@ -2,8 +2,15 @@ package model;
 
 import java.util.ArrayList;
 
+/**
+ * @author Manon Gaillardot et Willian Lanners
+ *
+ */
 public abstract class Tournoi {
-
+	/**
+	 * classe abstraite, super classe de tous les tournois
+	 *
+	 */
 	// attributs
 	protected String nom;
 	protected Sport sport;
@@ -13,7 +20,7 @@ public abstract class Tournoi {
 	protected boolean isTournoiPoules;
 	protected ArrayList<Equipe> listEquipes = new ArrayList<Equipe>();
 	protected ArrayList<Equipe> listEquiGagnantes = new ArrayList<Equipe>();
-	protected ArrayList<ArrayList <Match>> listTours = new ArrayList<ArrayList <Match>>();
+	protected ArrayList<ArrayList<Match>> listTours = new ArrayList<ArrayList<Match>>();
 	protected ArrayList<Match> tour = new ArrayList<Match>();
 	protected ArrayList<Equipe> listEquipesTourActuel = new ArrayList<Equipe>();
 
@@ -48,7 +55,7 @@ public abstract class Tournoi {
 	public void setListEquipes(ArrayList<Equipe> list_equipes) {
 		this.listEquipes = list_equipes;
 	}
-	
+
 	public ArrayList<Equipe> getListEquiGagnantes() {
 		return listEquiGagnantes;
 	}
@@ -56,6 +63,7 @@ public abstract class Tournoi {
 	public void setListEquiGagnantes(ArrayList<Equipe> lstEquGagn) {
 		this.listEquiGagnantes = lstEquGagn;
 	}
+
 	public int getNbrTours() {
 		return nbrTours;
 	}
@@ -72,11 +80,11 @@ public abstract class Tournoi {
 		this.numTourActuel = tourActuel;
 	}
 
-	public void setListTours(ArrayList<ArrayList <Match>> listTours) {
+	public void setListTours(ArrayList<ArrayList<Match>> listTours) {
 		this.listTours = listTours;
 	}
 
-	public ArrayList<ArrayList <Match>> getListTours() {
+	public ArrayList<ArrayList<Match>> getListTours() {
 		return listTours;
 	}
 

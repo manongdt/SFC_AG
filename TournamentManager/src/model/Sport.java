@@ -1,5 +1,9 @@
 package model;
 
+/**
+ * @author Manon Gaillardot et Willian Lanners
+ *
+ */
 public class Sport {
 
 	// attributs
@@ -23,7 +27,6 @@ public class Sport {
 		this.type = t;
 	}
 
-	// getters et setters
 	public int getScore_mini() {
 		return score_mini;
 	}
@@ -65,13 +68,12 @@ public class Sport {
 	}
 
 	public String stringSport() {
-		return "Sport[nom: " + nom + ", nb joueur(s): "
-				+ nbr_joueurs + ", score mini et maxi: " + score_mini + "-"
-				+ score_max+"]";
+		return "Sport[nom: " + nom + ", nb joueur(s): " + nbr_joueurs
+				+ ", score mini et maxi: " + score_mini + "-" + score_max + "]";
 	}
-	
+
 	@Override
-	public String toString(){
+	public String toString() {
 		return nom;
 	}
 }

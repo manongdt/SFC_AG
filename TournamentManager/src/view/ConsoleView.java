@@ -16,19 +16,17 @@ import model.Sport;
 import model.Tournoi;
 import model.TournoiPoule;
 
+/**
+ * @author Manon Gaillardot et Willian Lanners
+ *
+ */
 public class ConsoleView implements ViewInterface {
 
 	private static Scanner sc = new Scanner(System.in);
-	private ControllerTournoi controller;
 
 	public ConsoleView() {
 		super();
 		// TODO Auto-generated constructor stub
-	}
-
-	public ConsoleView(ControllerTournoi controller) {
-		super();
-		this.controller = controller;
 	}
 
 	public void afficherMenuPrincipal() {
@@ -53,6 +51,7 @@ public class ConsoleView implements ViewInterface {
 
 	}
 
+	// choix du type de tournoi
 	public boolean choixOrgaTournoi() {
 		String orga = "";
 		Pattern pattern = Pattern.compile("^[0-1]$");
@@ -67,13 +66,7 @@ public class ConsoleView implements ViewInterface {
 		}
 	}
 
-	public void creationTournoi(Tournoi tournoi) {
-		tournoi.setNom(choixNomTournoi());
-		tournoi.setSport(choixSportTournoi());
-		tournoi.setNbrEquipes(choixNbrEquipe(tournoi.isTournoiPoules(),
-				tournoi.getSport()));
-	}
-
+	// controle des saisies avec pattern
 	public String saisie(Pattern pattern, String choix) {
 		do {
 			sc = new Scanner(System.in);
@@ -81,6 +74,14 @@ public class ConsoleView implements ViewInterface {
 			choix = sc.nextLine();
 		} while (!pattern.matcher(choix).find());
 		return choix;
+	}
+
+	// affiche la creation d un tournoi
+	public void creationTournoi(Tournoi tournoi) {
+		tournoi.setNom(choixNomTournoi());
+		tournoi.setSport(choixSportTournoi());
+		tournoi.setNbrEquipes(choixNbrEquipe(tournoi.isTournoiPoules(),
+				tournoi.getSport()));
 	}
 
 	public String choixNomTournoi() {
@@ -186,7 +187,7 @@ public class ConsoleView implements ViewInterface {
 
 	public void saisieScoreMatch(Match m, boolean matchPoule) {
 		int s1 = -1, s2 = -1;
-		// si match de poule, match nul possible
+		// si match elim directe, match nul possible
 		if (matchPoule) {
 			System.out.println("\n - Saisir le score du match '"
 					+ m.getEquipe1().getNom() + " vs "
@@ -195,7 +196,7 @@ public class ConsoleView implements ViewInterface {
 			s1 = saisieScore(s1);
 			System.out.print("Score '" + m.getEquipe2().getNom() + "' ");
 			s2 = saisieScore(s2);
-		} else {
+		} else { // sinon, possible
 			System.out.println("\n - Saisir le score du match '"
 					+ m.getEquipe1().getNom() + " vs "
 					+ m.getEquipe2().getNom() + "' (match nul impossible):");
@@ -451,11 +452,14 @@ public class ConsoleView implements ViewInterface {
 
 	public void deroulementElimDirecte(Tournoi tournoi,
 			ControllerTournoi controller) {
+		// on affiche un tour tant que ce n'est pas la fin du tournoi
 		do {
 			afficherTour(tournoi);
 			controller.passeTourSuivantED(tournoi);
-		} while (tournoi.getNumTourActuel() < tournoi.getNbrTours());
+		} while (!controller.finTournoiED(tournoi));
+		// annonce du vainqueur
 		annonceVainqueurTournoi(tournoi);
+		// affichage des stats
 		afficherStatistiques(controller.statsMeilleureAttaque(tournoi),
 				controller.statsMeilleureDefense(tournoi));
 	}
@@ -464,6 +468,7 @@ public class ConsoleView implements ViewInterface {
 			ControllerPoule controller) {
 		// phase de poule
 		afficherAnnoncePhasePoules(tournoi);
+		// tant qu'une poule n a pas fini ses matchs
 		while (!controller.passePhaseFinale(tournoi)) {
 			int choix = choixRemplissagePoule(tournoi);
 			Poule p = tournoi.getListPoules().get(choix);
@@ -472,13 +477,14 @@ public class ConsoleView implements ViewInterface {
 			controller.finMatchsPoule(p);
 			afficherVainqueurPoule(p, choix);
 		}
+
 		// phase finale
 		afficherAnnoncePhaseFinale();
 		controller.lancementPhaseFinale(tournoi);
 		do {
 			afficherTour(tournoi);
 			controller.passeTourSuivantED(tournoi);
-		} while (tournoi.getNumTourActuel() < tournoi.getNbrTours());
+		} while (!controller.finTournoiED(tournoi));
 
 		annonceVainqueurTournoi(tournoi);
 		afficherStatistiques(controller.statsMeilleureAttaque(tournoi),

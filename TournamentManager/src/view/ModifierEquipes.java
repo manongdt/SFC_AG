@@ -3,7 +3,6 @@
  */
 package view;
 
-import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.Frame;
 
@@ -11,10 +10,6 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
-import controller.ControllerElimDirecte;
-import controller.ControllerTournoi;
-
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
@@ -28,9 +23,7 @@ import model.Tournoi;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-import javax.swing.border.SoftBevelBorder;
 import javax.swing.border.BevelBorder;
-import javax.swing.JSeparator;
 
 import java.awt.Color;
 import java.awt.SystemColor;
@@ -38,9 +31,10 @@ import java.util.regex.Pattern;
 import java.awt.Font;
 
 /**
- * @author Manon Gaillardot
+ * @author Manon Gaillardot et Willian Lanners
  *
  */
+@SuppressWarnings("serial")
 public class ModifierEquipes extends JDialog {
 
 	private Tournoi tournoi;
@@ -236,7 +230,7 @@ public class ModifierEquipes extends JDialog {
 			}
 		}
 		if (!nbrJoueurs.equals("")) {
-			Pattern pattern2 = Pattern.compile("^([1-9]|[1-2][0-9])$");
+			Pattern pattern2 = Pattern.compile("^([1-9]|[1-2][0-9]|30)$");
 			if (pattern2.matcher(nbrJoueurs).find()) {
 				tournoi.getListEquipes().get(iEqu)
 						.setNbrJoueurs(Integer.parseInt(nbrJoueurs));
@@ -255,9 +249,11 @@ public class ModifierEquipes extends JDialog {
 			}
 		}
 		if (isError == true) {
-			JOptionPane.showMessageDialog(null,
-					"Format incorrect pour au moins un des champs."
-							+ "\n-Aucun caractère spécial autorisé");
+			JOptionPane
+					.showMessageDialog(
+							null,
+							"Format incorrect pour au moins un des champs."
+									+ "\n-Aucun caractère spécial autorisé\n-Nombre de joueurs compris entre 1 et 30");
 		}
 		if (isModified == true) {
 			lInfoModif.setVisible(true);

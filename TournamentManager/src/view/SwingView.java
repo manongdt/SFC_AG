@@ -19,9 +19,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 /**
- * @author Manon Gaillardot
+ * @author Manon Gaillardot et Willian Lanners
  *
  */
+@SuppressWarnings("serial")
 public class SwingView extends JFrame implements ViewInterface{
 
 	NouveauTournoi dialogNouveauTournoi;
@@ -39,7 +40,6 @@ public class SwingView extends JFrame implements ViewInterface{
 	 * Create the frame.
 	 */
 	public SwingView() {
-		//listControllerTournoi = new ArrayList<ControllerTournoi>();
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("Gestionnaire de tournoi");

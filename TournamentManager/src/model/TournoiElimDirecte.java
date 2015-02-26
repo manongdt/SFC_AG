@@ -1,10 +1,10 @@
 package model;
 
-import controller.ControllerElimDirecte;
-import controller.ControllerTournoi;
-
+/**
+ * @author Manon Gaillardot et Willian Lanners
+ *
+ */
 public class TournoiElimDirecte extends Tournoi {
-
 
 	// constructeur pour tournoi a elimination directe
 	public TournoiElimDirecte() {
@@ -14,6 +14,6 @@ public class TournoiElimDirecte extends Tournoi {
 		this.numTourActuel = 0;
 		this.nbrTours = 0;
 		isTournoiPoules = false;
-	}	
+	}
 
 }

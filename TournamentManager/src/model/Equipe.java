@@ -3,6 +3,10 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Manon Gaillardot et Willian Lanners
+ *
+ */
 public class Equipe implements Comparable<Equipe> {
 	// attributs
 	private int nbrJoueurs;
@@ -117,7 +121,6 @@ public class Equipe implements Comparable<Equipe> {
 	public void addTotalButs(int buts) {
 		this.totalButs += buts;
 	}
-	
 
 	public int getTotalButsEncaisse() {
 		return totalButsEncaisse;
@@ -130,19 +133,20 @@ public class Equipe implements Comparable<Equipe> {
 	@Override
 	public int compareTo(Equipe o) {
 		int i = points > o.getPoints() ? 1 : points < o.getPoints() ? -1 : 0;
-		if(i != 0){
+		if (i != 0) {
 			return i;
 		}
-		i = goalAverage > o.getGoalAverage() ? 1 : goalAverage < o.getGoalAverage() ? -1 : 0;
-		if(i != 0){
+		i = goalAverage > o.getGoalAverage() ? 1 : goalAverage < o
+				.getGoalAverage() ? -1 : 0;
+		if (i != 0) {
 			return i;
 		}
 		return 1;
 	}
-	
+
 	@Override
-	public String toString(){
+	public String toString() {
 		return nom;
 	}
-	
+
 }

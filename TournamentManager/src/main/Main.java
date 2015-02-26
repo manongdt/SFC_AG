@@ -3,14 +3,11 @@ package main;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
-import model.TournoiElimDirecte;
-import model.TournoiPoule;
 import view.ConsoleView;
 import view.SwingView;
-import view.ViewInterface;
 import controller.ControllerElimDirecte;
 import controller.ControllerPoule;
-import controller.ControllerTournoi;
+
 
 public class Main {
 
@@ -20,17 +17,20 @@ public class Main {
 		sc = new Scanner(System.in);
 		Pattern pattern = Pattern.compile("^[SC]$");
 		String sView = "";
+		// affiche en mode console choix de vue du programme
 		do {
 			System.out
 					.print("Choisissez le mode console ou graphique (C ou S): ");
 			sView = sc.nextLine();
 		} while (!pattern.matcher(sView).find());
+		// en fonction de la vue
 		switch (sView) {
-		case "C":
+		case "C": // mode console
 			ConsoleView cv = new ConsoleView();
 			boolean nouveau = true;
-			do {
+			do {// on affiche le menu principal
 				cv.afficherMenuPrincipal();
+				// demande quel type de tournoi on lance
 				boolean isTournoiED = cv.choixOrgaTournoi();
 				if (isTournoiED) {
 					ControllerElimDirecte cED = new ControllerElimDirecte(cv,
@@ -42,7 +42,8 @@ public class Main {
 				}
 			} while (nouveau);
 			break;
-		case "S":
+		case "S": // mode graphique
+			// on lance la frame
 			new SwingView();
 			break;
 
