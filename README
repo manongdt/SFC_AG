@@ -15,10 +15,9 @@ Fonctionnalités implémentées :
 
 - Utilisation de Regex pour gérer les erreurs
 
+- Utilisation d’un fichier pour stocker les sports
 
 - Le projet peut-être lancé en mode Console ou Graphique (Swing)
-
-- Utilisation d’un fichier pour stocker les sports
 
 
 Fonctionnalités bonus :
