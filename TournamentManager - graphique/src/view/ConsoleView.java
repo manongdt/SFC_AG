@@ -13,7 +13,7 @@ import model.Match;
 import model.Poule;
 import model.Sport;
 import model.Tournoi;
-import model.TournoiPoules;
+import model.TournoiPoule;
 
 public class ConsoleView {
 
@@ -33,26 +33,43 @@ public class ConsoleView {
 	public void afficherMenuPrincipal() {
 		String choix = "";
 		Pattern pattern = Pattern.compile("^[0-1]$");
-		do {
-			choix = "";
-			System.out.println("\n\t*******************************");
-			System.out.println("\t**  GESTIONNAIRE DE TOURNOI  **");
-			System.out.println("\t*******************************\n");
-			System.out.println(" 1: Créer un nouveau tournoi");
-			System.out.println(" 0: Quitter le programme");
-			choix = saisie(pattern, choix);
-			switch (choix) {
-			case "1":
-				afficherSeparation();
-				afficherCreationTournoi();
-				break;
-			case "0":
-				System.out.println("\nSortie du programme.");
-				System.exit(0);
-			}
 
-		} while (choix.equals("1"));
+		choix = "";
+		System.out.println("\n\t*******************************");
+		System.out.println("\t**  GESTIONNAIRE DE TOURNOI  **");
+		System.out.println("\t*******************************\n");
+		System.out.println(" 1: Créer un nouveau tournoi");
+		System.out.println(" 0: Quitter le programme");
+		choix = saisie(pattern, choix);
+		switch (choix) {
+		case "1":
+			afficherSeparation();
+			break;
+		case "0":
+			System.out.println("\nSortie du programme.");
+			System.exit(0);
+		}
 
+	}
+
+	public boolean choixOrgaTournoi() {
+		String orga = "";
+		Pattern pattern = Pattern.compile("^[0-1]$");
+		System.out.println("- Organisation du tournoi:");
+		System.out.println("0: tournoi à phase de poules/phase finale");
+		System.out.println("1: tournoi par élimination directe");
+		orga = saisie(pattern, orga);
+		if (orga.equals("0")) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+	
+	public void creationTournoi(Tournoi tournoi){
+		tournoi.setNom(choixNomTournoi());
+		tournoi.setSport(choixSportTournoi());
+		tournoi.setNbrEquipes(choixNbrEquipe(tournoi.isTournoiPoules(), tournoi.getSport()));
 	}
 
 	public String saisie(Pattern pattern, String choix) {
@@ -64,22 +81,8 @@ public class ConsoleView {
 		return choix;
 	}
 
-	public void afficherCreationTournoi() {
-		String nomTournoi = choixNomTournoi();
-		Sport sport = choixSportTournoi();
-		int orga = choixOrgaTournoi();
-		int nbrEq = choixNbrEquipe(orga, sport);
-		
-		if (orga == 0) {
-			controller.creerTournoi(true, nomTournoi, sport, nbrEq);
-
-		} else if (orga == 1) {
-			controller.creerTournoi(false, nomTournoi, sport, nbrEq);
-		}
-	}
-
 	public String choixNomTournoi() {
-		System.out.println("- Nom du tournoi:");
+		System.out.println("\n- Nom du tournoi:");
 		Pattern pattern = Pattern.compile("^[a-zA-Z0-9 ]*$");
 		return saisie(pattern, "");
 	}
@@ -137,36 +140,21 @@ public class ConsoleView {
 		return listSport.get(index);
 	}
 
-	public int choixOrgaTournoi() {
-		String orga = "";
-		Pattern pattern = Pattern.compile("^[0-1]$");
-		System.out.println("\n- Organisation du tournoi:");
-		System.out.println("0: tournoi à phase de poules/phase finale");
-		System.out.println("1: tournoi par élimination directe");
-		orga = saisie(pattern, orga);
-
-		return Integer.parseInt(orga);
-	}
-
-	public int choixNbrEquipe(int orgaTournoi, Sport sport) {
+	public int choixNbrEquipe(boolean istournoiPoule, Sport sport) {
 		int nbr = 0;
 		String str = sport.getType() == 'c' ? "d'équipes" : "de joueurs";
-		switch (orgaTournoi) {
-		case 0:
+		if (istournoiPoule) {
 			String nbrPoules = "";
 			Pattern pattern = Pattern.compile("^([2-9]|1[0-9]|20)$");
 			System.out.println("\n- Nombre de poules de 4 - minimum 2:");
 			nbrPoules = saisie(pattern, nbrPoules);
 			nbr = Integer.parseInt(nbrPoules) * 4;
-			break;
-
-		case 1:
+		} else {
 			String nbrEq = "";
 			Pattern pattern2 = Pattern.compile("^([2-9]|[1-7][0-9]|80)$");
 			System.out.println("\n- Nombre " + str + " - minimum 2:");
 			nbrEq = saisie(pattern2, nbrEq);
 			nbr = Integer.parseInt(nbrEq);
-			break;
 		}
 		return nbr;
 	}
@@ -184,11 +172,14 @@ public class ConsoleView {
 		for (int i = 0; i < tournoi.getTour().size(); i++) {
 			afficherMatch(tournoi.getTour().get(i));
 		}
+		
+		for (Match m : tournoi.getTour()) {
+			saisieScoreMatch(m, false);
+		}
 	}
 
 	public void afficherMatch(Match m) {
-		System.out.println(" >> " + m.getEquipe1().getNom() + " vs "
-				+ m.getEquipe2().getNom());
+		System.out.println(" >> " + m.toString());
 	}
 
 	public void saisieScoreMatch(Match m, boolean matchPoule) {
@@ -233,7 +224,7 @@ public class ConsoleView {
 		return s;
 	}
 
-	public void sousMenu(Tournoi tournoi) {
+	public void modifierEquipes(Tournoi tournoi) {
 		String choix;
 		do {
 			choix = "";
@@ -252,7 +243,10 @@ public class ConsoleView {
 				modifierEquipe(tournoi);
 			}
 		} while (!choix.equals("3"));
+		alerteLancement(tournoi);
 	}
+	
+
 
 	public void afficherEquipes(Tournoi tournoi) {
 		ArrayList<Equipe> lst_equipes = tournoi.getListEquipes();
@@ -340,11 +334,11 @@ public class ConsoleView {
 							+ "vous devez compléter tous ses matchs.\n");
 		} else {
 			System.out.println("\n Tournoi '" + tournoi.getNom()
-					+ "' à élimination directe."+tournoi.getSport().getNom());
+					+ "' à élimination directe." + tournoi.getSport().getNom());
 		}
 	}
 
-	public void afficherAnnoncePhasePoules(TournoiPoules tournoi) {
+	public void afficherAnnoncePhasePoules(TournoiPoule tournoi) {
 		System.out
 				.println("\n**************************************************");
 		System.out
@@ -377,7 +371,7 @@ public class ConsoleView {
 		System.out.print("\n");
 	}
 
-	public void afficherPoulesARemplir(TournoiPoules tournoi) {
+	public void afficherPoulesARemplir(TournoiPoule tournoi) {
 		int i = 0;
 		for (Poule p : tournoi.getListPoules()) {
 			if (!p.isMatchsFinis()) {
@@ -387,7 +381,7 @@ public class ConsoleView {
 		}
 	}
 
-	public int choixRemplissagePoule(TournoiPoules tournoi) {
+	public int choixRemplissagePoule(TournoiPoule tournoi) {
 		int choix = -1;
 		// afficher les poules a remplir
 		System.out.println("\nCHOISIR UNE POULE:");
@@ -437,21 +431,17 @@ public class ConsoleView {
 	public void annonceVainqueurTournoi(Tournoi tournoi) {
 		System.out.println("\n/!\\ VAINQUEUR DU TOURNOI: "
 				+ tournoi.getTour().get(0).getVainqueur().getNom() + " /!\\\n");
-
-		afficherStatistiques(tournoi);
 	}
 
-	public void afficherStatistiques(Tournoi tournoi) {
+	public void afficherStatistiques(ArrayList<Equipe> meilAtta, ArrayList<Equipe> meilDef) {
 		System.out.println("\n\t----------------");
 		System.out.println("\t| STATISTIQUES |");
 		System.out.println("\t----------------");
-		System.out.print("\n Meilleure attaque: ");
-		ArrayList<Equipe> meilAtta = controller.statsMeilleureAttaque(tournoi);
+		System.out.print("\n Meilleure attaque : ");
 		for (Equipe e : meilAtta) {
 			System.out.print("- " + e.getNom() + " -");
 		}
-		System.out.print("\n Meilleure défense: ");
-		ArrayList<Equipe> meilDef = controller.statsMeilleureDefense(tournoi);
+		System.out.print("\n Meilleure défense : ");
 		for (Equipe e : meilDef) {
 			System.out.print("- " + e.getNom() + " -");
 		}

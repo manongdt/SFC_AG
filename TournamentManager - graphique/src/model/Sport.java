@@ -69,4 +69,9 @@ public class Sport {
 				+ nbr_joueurs + ", score mini et maxi: " + score_mini + "-"
 				+ score_max+"]";
 	}
+	
+	@Override
+	public String toString(){
+		return nom;
+	}
 }

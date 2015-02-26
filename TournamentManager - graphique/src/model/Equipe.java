@@ -32,7 +32,7 @@ public class Equipe implements Comparable<Equipe> {
 		this.points = 0;
 		this.totalButs = 0;
 		this.totalButsEncaisse = 0;
-		this.description = "Aucune description de l'équipe disponible pour le moment.";
+		this.description = "Aucune description de l'équipe disponible.";
 		for (int i = 0; i < nbrJoueurs; i++) {
 			list_joueurs.add(new Joueur(this, i));
 		}
@@ -138,6 +138,11 @@ public class Equipe implements Comparable<Equipe> {
 			return i;
 		}
 		return 1;
+	}
+	
+	@Override
+	public String toString(){
+		return nom;
 	}
 	
 }

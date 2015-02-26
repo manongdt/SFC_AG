@@ -85,7 +85,7 @@ public abstract class Tournoi {
 	}
 
 	public void setListEquipesTourActuel(ArrayList<Equipe> lstEquTourActu) {
-		this.listEquipesTourActuel = lstEquTourActu;
+		this.listEquipesTourActuel.addAll(lstEquTourActu);
 	}
 
 	public boolean isTournoiPoules() {

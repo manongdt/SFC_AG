@@ -3,8 +3,24 @@
  */
 package view;
 
+import java.awt.BorderLayout;
+import java.awt.Frame;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.JLabel;
+
+import model.Tournoi;
+import model.TournoiPoule;
+import controller.ControllerElimDirecte;
+import controller.ControllerPoule;
+import controller.ControllerTournoi;
+
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.util.ArrayList;
 
 /**
  * @author Manon Gaillardot
@@ -12,16 +28,116 @@ import javax.swing.JFrame;
  */
 public class SwingView extends JFrame {
 
-	/**
-	 * 
-	 */
-	//private final JButton bCreerTournoi;
-    //private final JButton bQuitter;
-    
-	public SwingView() {
-		super();
+	//private ArrayList<ControllerTournoi> listControllerTournoi;
+	NouveauTournoi dialogNouveauTournoi;
+	ModifierEquipes dialogModifEq;
+	ElimDirecteView dialogED;
+	PouleView dialogPoule;
+	private JPanel contentPane;
+	JPanel pTypeTournoi;
+	private JButton bQuitter;
+	private JButton bCreer;
+	private JLabel lTitre;
+	private JButton bTournoiED;
 
-		// TODO Auto-generated constructor stub
+	/**
+	 * Create the frame.
+	 */
+	public SwingView() {
+		//listControllerTournoi = new ArrayList<ControllerTournoi>();
+		
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setTitle("Gestionnaire de tournois");
+		setLocationRelativeTo(null);
+		setBounds(100, 100, 450, 300);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+
+		bQuitter = new JButton("Quitter");
+		bQuitter.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.exit(0);
+			}
+		});
+		bQuitter.setBounds(309, 212, 117, 29);
+		contentPane.add(bQuitter);
+
+		bCreer = new JButton("Créer un nouveau tournoi");
+		bCreer.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				bCreerActionPerformed(e);
+
+			}
+		});
+		bCreer.setBounds(143, 83, 177, 40);
+		contentPane.add(bCreer);
+
+		lTitre = new JLabel("Bienvenue dans le gestionnaire de tournoi.");
+		lTitre.setBounds(93, 23, 279, 29);
+		contentPane.add(lTitre);
+
+		pTypeTournoi = new JPanel();
+		pTypeTournoi.setBounds(51, 135, 355, 65);
+		contentPane.add(pTypeTournoi);
+		pTypeTournoi.setVisible(false);
+		pTypeTournoi.setLayout(null);
+
+		bTournoiED = new JButton("Tournoi ED");
+		bTournoiED.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				bTournoiEDActionPerformed();
+			}
+		});
+		bTournoiED.setBounds(20, 18, 117, 29);
+		pTypeTournoi.add(bTournoiED);
+
+		JButton bTournoiPoules = new JButton("Tournoi poules");
+		bTournoiPoules.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				bTournoiPoulesActionPerformed();
+			}
+		});
+		bTournoiPoules.setBounds(194, 18, 139, 29);
+		pTypeTournoi.add(bTournoiPoules);
+
+		setVisible(true);
+		
 	}
 
+	public void bTournoiEDActionPerformed() {
+		this.setVisible(false);
+		ControllerElimDirecte cED = new ControllerElimDirecte(null, this, "S");
+		cED.start();
+		pTypeTournoi.setVisible(false);
+	}
+
+	public void bTournoiPoulesActionPerformed() {
+		this.setVisible(false);
+		ControllerPoule cP = new ControllerPoule(null, this, "S");
+		cP.start();
+		pTypeTournoi.setVisible(false);
+	}
+
+	public void bCreerActionPerformed(ActionEvent evt) {
+		pTypeTournoi.setVisible(true);
+	}
+
+	public void creationTournoi(Tournoi tournoi) {
+		dialogNouveauTournoi = new NouveauTournoi(this, true, tournoi);
+	}
+
+	public void modifierEquipes(Tournoi tournoi) {
+		dialogModifEq = new ModifierEquipes(this, true, tournoi);
+	}
+	
+	public void deroulementElimDirecte(Tournoi tournoi, ControllerTournoi controller){
+		dialogED = new ElimDirecteView(this, true, tournoi, controller);
+	}
+	
+	public void deroulementPoule(TournoiPoule tournoi, ControllerPoule controller){
+		dialogPoule = new PouleView(this, true, tournoi, controller);
+		dialogED = new ElimDirecteView(this, true, tournoi, controller);
+	}
 }

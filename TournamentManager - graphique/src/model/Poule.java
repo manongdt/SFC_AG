@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 public class Poule {
 
+	private int IDPoule;
 	private ArrayList<Match> listMatchs = new ArrayList<Match>();
 	private ArrayList<Equipe> listEquipes = new ArrayList<Equipe>();
 	private ArrayList<Equipe> listVainqueurs = new ArrayList<Equipe>();
@@ -16,7 +17,8 @@ public class Poule {
 		super();
 	}
 
-	public Poule(ArrayList<Equipe> lstEq, ArrayList<Match> lstMatch) {
+	public Poule(ArrayList<Equipe> lstEq, ArrayList<Match> lstMatch, int IDPoule) {
+		this.IDPoule = IDPoule + 1;
 		this.listEquipes.addAll(lstEq);
 		this.listMatchs.addAll(lstMatch);
 		this.matchsFinis = false;
@@ -52,6 +54,19 @@ public class Poule {
 
 	public void setMatchsFinis(boolean matchsFinis) {
 		this.matchsFinis = matchsFinis;
+	}
+	
+	public int getIDPoule() {
+		return IDPoule;
+	}
+
+	public void setIDPoule(int iDPoule) {
+		IDPoule = iDPoule;
+	}
+
+	@Override
+	public String toString(){
+		return "Poule "+IDPoule;
 	}
 
 }
