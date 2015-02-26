@@ -18,10 +18,17 @@ Fonctionnalités implémentées :
 
 - Le projet peut-être lancé en mode Console ou Graphique (Swing)
 
+- Utilisation d’un fichier pour stocker les sports
+
 
 Fonctionnalités bonus :
 
 - Conservation d’un goal average pour départager les équipes ayant le même nombre de points (lors des phases de poules)
 
 - Conservation des scores pour afficher les 3 équipes ayant la meilleure attaque et défense du tournoi
+
+
+Remarque sur le projet :
+Lors de la saisie des scores en phase de poule pour le mode graphique, ne pas oublier d’appuyer sur « Entrée » avant de cliquer sur le bouton « Enregistrer »
+
 
