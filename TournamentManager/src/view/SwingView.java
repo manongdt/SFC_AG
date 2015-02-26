@@ -17,6 +17,8 @@ import controller.ControllerTournoi;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.Color;
+import java.awt.Font;
 
 /**
  * @author Manon Gaillardot et Willian Lanners
@@ -44,7 +46,7 @@ public class SwingView extends JFrame implements ViewInterface{
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("Gestionnaire de tournoi");
 		setLocationRelativeTo(null);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 450, 265);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -56,45 +58,49 @@ public class SwingView extends JFrame implements ViewInterface{
 				System.exit(0);
 			}
 		});
-		bQuitter.setBounds(309, 212, 117, 29);
+		bQuitter.setBounds(301, 197, 116, 29);
 		contentPane.add(bQuitter);
 
 		bCreer = new JButton("Créer un nouveau tournoi");
+		bCreer.setFont(new Font("Lucida Grande", Font.PLAIN, 15));
 		bCreer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				bCreerActionPerformed(e);
 
 			}
 		});
-		bCreer.setBounds(143, 83, 177, 40);
+		bCreer.setBounds(114, 72, 202, 40);
 		contentPane.add(bCreer);
 
-		lTitre = new JLabel("Bienvenue dans le gestionnaire de tournoi.");
-		lTitre.setBounds(93, 23, 279, 29);
+		lTitre = new JLabel("GESTIONNAIRE DE TOURNOI");
+		lTitre.setFont(new Font("Lucida Grande", Font.BOLD, 24));
+		lTitre.setForeground(new Color(51, 102, 204));
+		lTitre.setBounds(44, 20, 362, 40);
 		contentPane.add(lTitre);
 
 		pTypeTournoi = new JPanel();
-		pTypeTournoi.setBounds(51, 135, 355, 65);
+		pTypeTournoi.setBounds(6, 124, 438, 49);
 		contentPane.add(pTypeTournoi);
 		pTypeTournoi.setVisible(false);
 		pTypeTournoi.setLayout(null);
 
-		bTournoiED = new JButton("Tournoi ED");
+		bTournoiED = new JButton("Tournoi à élimination directe");
+		bTournoiED.setFont(new Font("Lucida Grande", Font.PLAIN, 13));
 		bTournoiED.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				bTournoiEDActionPerformed();
 			}
 		});
-		bTournoiED.setBounds(20, 18, 117, 29);
+		bTournoiED.setBounds(6, 6, 201, 34);
 		pTypeTournoi.add(bTournoiED);
 
-		JButton bTournoiPoules = new JButton("Tournoi poules");
+		JButton bTournoiPoules = new JButton("Tournoi à phase de poule/finale");
 		bTournoiPoules.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				bTournoiPoulesActionPerformed();
 			}
 		});
-		bTournoiPoules.setBounds(194, 18, 139, 29);
+		bTournoiPoules.setBounds(216, 6, 216, 34);
 		pTypeTournoi.add(bTournoiPoules);
 
 		setVisible(true);
